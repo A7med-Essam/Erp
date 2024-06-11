@@ -1,0 +1,35 @@
+<mat-card *ngIf="Activity()?.data?.length; else noData">
+  <mat-card-content>
+    <h4 class="mb-60">Daily Activity</h4>
+    <div class="d-flex" *ngFor="let activity of Activity()?.data | slice : 0 : 4">
+      <p class="fw-bold ps-16 pe-20 fs-12">{{ activity.time }}</p>
+      <div class="activity-border">
+        <div class="deep">
+          <div class="activity-ring">
+            <div class="ring ring-success"></div>
+          </div>
+        </div>
+        <p class="ps-20 pe-16 activity-message">{{ activity.action }}</p>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #noData>
+  <mat-card>
+    <mat-card-content>
+      <h4 class="mb-60">Daily Activity</h4>
+      <div class="d-flex" *ngFor="let activity of activity">
+        <p class="fw-bold ps-16 pe-20 fs-12">{{ activity.time }}</p>
+        <div class="activity-border">
+          <div class="deep">
+            <div class="activity-ring">
+              <div class="ring ring-success"></div>
+            </div>
+          </div>
+          <p class="ps-20 pe-16 activity-message">{{ activity.action }}</p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</ng-template>

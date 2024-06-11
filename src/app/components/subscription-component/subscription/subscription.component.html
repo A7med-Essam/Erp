@@ -1,0 +1,73 @@
+<mat-card class="w-100">
+    <mat-card-content>
+        <div class="flex-between mb-4">
+            <h4 class="mb-3">Table Filters</h4>
+            <div>
+                <button mat-raised-button color="help" class="mx-1" (click)="export()"
+                    [disabled]="!Permissions.Subscriptions.Export">Export Filter</button>
+                <button mat-raised-button class="ms-8" color="success"
+                    [disabled]="!Permissions.Subscriptions.Create" routerLink="../create-subscription">Create
+                    Subscription</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <mat-form-field class="mx-1" appearance="outline">
+                    <mat-label>Search By Date Ranage</mat-label>
+                    <mat-date-range-input [rangePicker]="picker" (click)="picker.open()"
+                        [disabled]="!Permissions.Subscriptions.Search">
+                        <input matStartDate matInput [(ngModel)]="DateFrom" placeholder="Start date" />
+                        <input matEndDate matInput [(ngModel)]="DateTo" placeholder="End date" />
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker touchUi #picker></mat-date-range-picker>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-6" *ngIf="!toggleSID">
+                <mat-form-field class="mx-1" appearance="outline">
+                    <input matInput [disabled]="!Permissions.Subscriptions.Search" [(ngModel)]="sid"
+                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                        placeholder="Search By SID" (keyup.enter)="filter()">
+                </mat-form-field>
+            </div>
+            <div class="col-lg-6" *ngIf="toggleSID">
+                <mat-form-field class="mx-1" appearance="outline">
+                    <input matInput [disabled]="!Permissions.Subscriptions.Search" [(ngModel)]="oldSid"
+                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                        placeholder="Search By KOT SID" (keyup.enter)="filter()">
+                </mat-form-field>
+            </div>
+            <div class="col-lg-6">
+                <mat-form-field class="mx-1" appearance="outline">
+                    <input matInput [disabled]="!Permissions.Subscriptions.Search" [(ngModel)]="phone"
+                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                        placeholder="Search By Phone" (keyup.enter)="filter()">
+                </mat-form-field>
+            </div>
+            <div class="col-12 d-flex justify-content-between">
+                <div>
+                    <mat-slide-toggle [(ngModel)]="toggleSID" [checked]="toggleSID" [disabled]="!Permissions.Subscriptions.Search">
+                        <span class="text-muted fw-bold">Toggle Kot</span>
+                    </mat-slide-toggle>
+                </div>
+                <div>
+                    <button mat-raised-button color="secondary" class="mx-1" (click)="reset()"
+                        [disabled]="!Permissions.Subscriptions.Search">Reset</button>
+                    <button mat-raised-button color="accent" class="mx-1" (click)="filter()"
+                        [disabled]="!Permissions.Subscriptions.Search">Search</button>
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+<mat-card class="w-100">
+    <mat-card-content>
+        <h4 class="mb-56">Subscriptions Table</h4>
+        <generic-table [TABLE_DATA]="TABLE_DATA()" [columns]="columns" [pageSizeOptions]="[10, 25, 50, 100, 500]"
+            [actions]="actions" (PaginateOptions)="Paginate($event)"
+            [components]="{filter: true,columns: true,export: Permissions.Subscriptions.Export,selection: false, index:true}"
+            (details)="showDetails($event)" (sub)="createSubscription($event)">
+        </generic-table>
+    </mat-card-content>
+</mat-card>

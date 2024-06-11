@@ -1,0 +1,70 @@
+<div class="blank-layout-container justify-content-center">
+  <div class="position-relative row w-100 h-100">
+    <div class="col-lg-7 col-xl-8 p-0 bg-gredient">
+      <div class="p-24 h-100"><a class="ng-star-inserted"><img
+            src="../../../assets/images/logo-dark.svg" alt="logo" class="align-middle m-2"></a>
+        <!---->
+        <!---->
+        <div class="align-items-center justify-content-center img-height d-none d-lg-flex"><img
+            src="../../../assets/images/login.svg" alt="login" style="width: 100%; max-width: 600px;"></div>
+      </div>
+    </div>
+    <div class="col-lg-5 col-xl-4 p-0">
+      <div class="p-32 d-flex align-items-start align-items-lg-center justify-content-center h-100">
+        <div class="row justify-content-center w-100">
+          <div class="col-lg-9 max-width-form">
+            <h4 class="f-w-700 f-s-24 m-0">Welcome to Low Calories</h4>
+            <span class="d-block f-w-500 d-block m-t-10 text-muted">
+              
+              <a class="text-decoration-none text-accent f-w-500 f-s-14" target="_blank"
+                href="https://api.whatsapp.com/send?phone=+201226363992&text=Forgot Password!">Contact Us for Assistance</a>
+            </span>
+            
+            <form class="mt-5" [formGroup]='loginForm' (ngSubmit)='login(loginForm)'>
+              
+              <mat-form-field class="w-100 fs-16" appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput type="text" placeholder="Enter your email address" formControlName="email"
+                  [class.is-invalid]="loginForm.get('email')?.errors != null && loginForm.get('email')?.touched">
+              </mat-form-field>
+              <!-- <div class="text-start">
+                <small class="text-danger ms-1" *ngIf="loginForm.get('username')?.touched &&
+                  loginForm.get('username')?.hasError('required')">This field is required.</small>
+              </div> -->
+
+              <mat-form-field class="w-100 fs-16" appearance="outline">
+                <mat-label>Password</mat-label>
+                <input matInput type="password" placeholder="Enter your password" formControlName="password"
+                  [class.is-invalid]="loginForm.get('password')?.errors != null && loginForm.get('password')?.touched">
+              </mat-form-field>
+              <!-- <small class="text-danger"
+                *ngIf="loginForm.get('password')?.errors != null && loginForm.get('password')?.touched">
+                Password is required
+              </small> -->
+
+              <button mat-button-ripple-uninitialized="" mat-flat-button="" color="primary"
+                class="w-100 mdc-button mdc-button--unelevated mat-mdc-unelevated-button mat-primary mat-mdc-button-base"
+                mat-button-is-fab="false" [disabled]="loginForm.invalid">
+                <span class="mat-mdc-button-persistent-ripple mdc-button__ripple"></span>
+                <span class="mdc-button__label">Sign In</span>
+                <span class="mat-mdc-focus-indicator"></span>
+                <span class="mat-mdc-button-touch-target"></span>
+                <ng-container *ngIf="login$ | async as login">
+                  <ng-container *ngIf="login.loading">
+                    <i class="fa-solid fa-circle-notch fa-spin mx-2"></i>
+                  </ng-container>
+                </ng-container>
+              </button>
+            </form>
+
+          </div>
+          <div class="col-12 max-width-form">
+            <span class="d-block f-w-500 d-block m-t-10 text-muted">Forgot Password?
+              <a class="text-decoration-none text-accent f-w-500 f-s-14 pointer" routerLink="../forgot">Reset it here.</a>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

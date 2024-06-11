@@ -1,0 +1,53 @@
+<div class="container-fluid" #download_container>
+    <mat-card class="w-100">
+        <mat-card-content>
+            <h6 class="mb-4 pb-3">Plan Details</h6>
+            <generic-table [TABLE_DATA]="{data:[plan]}" [columns]="columns"></generic-table>
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="w-100">
+        <mat-card-content>
+            <h6 class="mb-4 pb-3">Nutiration facts per week</h6>
+            <generic-table [TABLE_DATA]="{data:plan?.weeks}" [columns]="weekColumns"></generic-table>
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="w-100">
+        <mat-card-content>
+            <h6 class="mb-4 pb-3">Nutiration facts per day</h6>
+            <generic-table [TABLE_DATA]="{data:plan?.details}" [columns]="dayColumns"></generic-table>
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="w-100">
+        <mat-card-content>
+            <h6 class="mb-4 pb-3">Nutiration facts per meal</h6>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th *ngFor="let meal of plan?.details[maxMeals]?.meals">{{meal.mealType}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of plan?.details" style="font-size: 12px;">
+                        <td class="text-center">
+                            <b>{{item?.deliveryDay}}</b>
+                            <br>
+                            <b>{{item?.dayName}}</b>
+                        </td>
+                        <td class="text-center p-1 meal-nutrition" *ngFor="let meal of item?.meals">
+                            <b class="text-primary">{{meal?.mealName}}</b> <br><br>
+                            <generic-table [TABLE_DATA]="{data:[meal]}" [columns]="mealColumns"></generic-table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </mat-card-content>
+    </mat-card>
+</div>
+<mat-dialog-actions align="end">
+    <button color="warn" type="button" mat-button mat-dialog-close>Close</button>
+    <button color="help" type="button" mat-button (click)="export()">
+        Export
+        <i *ngIf="isLoading" class="fas fa-circle-notch fa-spin p-0"></i>
+    </button>
+</mat-dialog-actions>

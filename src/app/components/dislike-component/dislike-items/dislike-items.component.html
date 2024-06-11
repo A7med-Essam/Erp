@@ -1,0 +1,19 @@
+<div class="my-4">
+    <mat-card class="w-100">
+        <mat-card-content>
+            <div class="flex-between mb-56">
+                <h4>
+                    Dislike Item Table
+                </h4>
+                <div class="mb-2 text-right">
+                    <button mat-raised-button class="me-8 mb-8" [disabled]="!Permissions.AutoDislike.Create"
+                        (click)="openCreateDialog()" color="success">Add Dislike Item</button>
+                </div>
+            </div>
+            <generic-table [TABLE_DATA]="TABLE_DATA()" [columns]="columns" [pageSizeOptions]="[10, 25, 50, 100, 500]"
+                [components]="{filter: true,columns: true,export: false, index:true}" [actions]="actions"
+                (delete)="deleteRow($event)" (update)="updateRow($event)">
+            </generic-table>
+        </mat-card-content>
+    </mat-card>
+</div>

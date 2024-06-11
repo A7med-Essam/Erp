@@ -1,0 +1,22 @@
+<div class="px-5">
+    <h6 mat-dialog-title class="px-0">
+        Action Form <span class="text-primary">(DETACH)</span>
+    </h6>
+    <generic-table *ngIf="currentPlan.length" [TABLE_DATA]="{data:currentPlan}" [columns]="columns"
+        [components]="{filter: false,columns: false,export: false,selection: true}" [pageSizeOptions]="[]"
+        [actions]="[]" (selected)="getSelectedRows($event)">
+    </generic-table>
+
+    <form class="mt-3" [formGroup]="dialogForm" (ngSubmit)="onSubmit(dialogForm)">
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Notes</mat-label>
+            <textarea matInput rows="3" placeholder="Write your notes" value="Default Value"
+                formControlName="Notes"></textarea>
+        </mat-form-field>
+
+        <mat-dialog-actions align="end">
+            <button type="button" mat-button mat-dialog-close>Cancel</button>
+            <button type="submit" mat-raised-button [disabled]="dialogForm.invalid" color="success">Submit</button>
+        </mat-dialog-actions>
+    </form>
+</div>

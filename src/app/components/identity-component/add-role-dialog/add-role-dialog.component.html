@@ -1,0 +1,52 @@
+<div class="p-5">
+    <div class="cdk-global-overlay-wrapper w-100 h-100" dir="ltr" style="justify-content: center; align-items: center;">
+        <div id="cdk-overlay-5" class="cdk-overlay-pane w-100 h-100" style=" position: static;">
+            <div tabindex="-1" class="mat-mdc-dialog-container mdc-dialog cdk-dialog-container mdc-dialog--open"
+                id="mat-mdc-dialog-1" role="dialog" aria-modal="true" aria-labelledby="mat-mdc-dialog-title-1"
+                style="--mat-dialog-transition-duration: 0ms;">
+                <div class="mdc-dialog__container">
+                    <div class="mat-mdc-dialog-surface mdc-dialog__surface">
+                        <div class="ng-star-inserted">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 mat-dialog-title=""
+                                    class="mat-mdc-dialog-title mdc-dialog__title mat-subtitle-1 ps-3">
+                                    Create Role</h5>
+                                <mat-icon class="text-secondary close-modal-button" (click)="closeModal()" matSuffix>
+                                    close</mat-icon>
+                            </div>
+                            <div mat-dialog-content=""
+                                class="mat-mdc-dialog-content mdc-dialog__content mat-subtitle-2 lh-16 py-0">
+                                Fill all required inputs.
+                            </div>
+                            <div class="px-5 py-2">
+                                <form [formGroup]="createForm" (ngSubmit)="onSubmit(createForm)">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6">
+                                            <mat-form-field class="w-100 fs-16" appearance="outline">
+                                                <mat-label>Role Name</mat-label>
+                                                <input matInput type="text" placeholder="Enter role name"
+                                                    formControlName="name">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6">
+                                            <mat-form-field class="w-100 fs-16" appearance="outline">
+                                                <mat-label>Role Description</mat-label>
+                                                <input matInput type="text" placeholder="Enter role description"
+                                                    formControlName="description">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div mat-dialog-actions=""
+                                        class="mat-mdc-dialog-actions mdc-dialog__actions p-24 p-t-0 justify-content-center">
+                                        <button mat-raised-button type="submit" color="primary"
+                                            [disabled]="createForm.invalid">Create</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

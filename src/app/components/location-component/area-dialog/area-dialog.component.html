@@ -1,0 +1,60 @@
+<div class="px-5">
+    <h6 mat-dialog-title class="px-0">
+        Area Form
+    </h6>
+    <form class="mt-3" [formGroup]="dialogForm" (ngSubmit)="onSubmit(dialogForm)">
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Area Name</mat-label>
+            <input matInput type="text" placeholder="Enter Area Name" formControlName="name">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Governorate</mat-label>
+            <mat-select formControlName="governorateID">
+                <input type="text" autocomplete="off" matInput appSelectSearch
+                    [searchList]="GOVERNORATE_DATA()?.data || []" [filterKeys]="['governorateName']"
+                    class="px-3 py-4 mat-filter-menu" style="font-size: 16px;font-weight: 400;"
+                    placeholder="Search..." />
+                <mat-option *ngFor="let item of GOVERNORATE_DATA()?.data" [value]="item.id">
+                    {{item.governorateName}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>City</mat-label>
+            <mat-select formControlName="cityID">
+                <input type="text" autocomplete="off" matInput appSelectSearch [searchList]="CITY_DATA()?.data || []"
+                    [filterKeys]="['cityName']" class="px-3 py-4 mat-filter-menu"
+                    style="font-size: 16px;font-weight: 400;" placeholder="Search..." />
+                <mat-option *ngFor="let item of CITY_DATA()?.data" [value]="item.id">
+                    {{item.cityName}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Branch</mat-label>
+            <mat-select formControlName="branchID">
+                <input type="text" autocomplete="off" matInput appSelectSearch [searchList]="BRANCH_DATA()?.data || []"
+                    [filterKeys]="['branchName']" class="px-3 py-4 mat-filter-menu"
+                    style="font-size: 16px;font-weight: 400;" placeholder="Search..." />
+                <mat-option *ngFor="let item of BRANCH_DATA()?.data" [value]="item.branchID">
+                    {{item.branchName}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Driver</mat-label>
+            <mat-select formControlName="driverID">
+                <input type="text" autocomplete="off" matInput appSelectSearch [searchList]="DRIVER_DATA()?.data || []"
+                    [filterKeys]="['driverName']" class="px-3 py-4 mat-filter-menu"
+                    style="font-size: 16px;font-weight: 400;" placeholder="Search..." />
+                <mat-option *ngFor="let item of DRIVER_DATA()?.data" [value]="item.id">
+                    {{item.driverName}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-dialog-actions align="end">
+            <button type="button" mat-button mat-dialog-close>Cancel</button>
+            <button type="submit" mat-raised-button [disabled]="dialogForm.invalid" color="success">Submit</button>
+        </mat-dialog-actions>
+    </form>
+</div>

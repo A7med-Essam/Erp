@@ -1,0 +1,26 @@
+<div class="px-5">
+    <h6 mat-dialog-title class="px-0">
+        Action Form <span class="text-primary">(HOLD)</span>
+    </h6>
+    <form class="mt-3" [formGroup]="dialogForm" (ngSubmit)="onSubmit(dialogForm)">
+        <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Choose Date</mat-label>
+            <input (click)="picker.open()" matInput [matDatepicker]="picker" formControlName="StartHoldDate"
+                [min]="todayDate">
+            <mat-datepicker-toggle matIconSuffix [for]="picker">
+            </mat-datepicker-toggle>
+            <mat-datepicker touchUi #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Notes</mat-label>
+            <textarea matInput rows="3" placeholder="Write your notes" value="Default Value"
+                formControlName="Notes"></textarea>
+        </mat-form-field>
+
+        <mat-dialog-actions align="end">
+            <button type="button" mat-button mat-dialog-close>Cancel</button>
+            <button type="submit" mat-raised-button [disabled]="dialogForm.invalid" color="success">Submit</button>
+        </mat-dialog-actions>
+    </form>
+</div>

@@ -1,0 +1,37 @@
+<div class="px-5">
+    <h6 mat-dialog-title class="px-0">Action Form <span class="text-primary">(UPDATE CARB & PROTEIN)</span></h6>
+    <div class="input-row">
+        <div class="title">
+            <h6 class="label">Carb</h6>
+            <p class="description">You can edit the amount by 50 points.</p>
+        </div>
+        <div class="input">
+            <button class="nutrition-btn minus" aria-label="Decrease by one" (click)="decreaseCarb()">
+                <mat-icon><i class="material-icons">minimize</i></mat-icon>
+            </button>
+            <div class="number dim mx-2">{{ carbValue }}</div>
+            <button class="nutrition-btn plus" aria-label="Increase by one" (click)="increaseCarb()">
+                <mat-icon><i class="material-icons">add</i></mat-icon>
+            </button>
+        </div>
+    </div>
+    <div class="input-row">
+        <div class="title">
+            <h6 class="label">Protein</h6>
+            <p class="description">You can edit the amount by 50 points.</p>
+        </div>
+        <div class="input">
+            <button class="nutrition-btn minus" aria-label="Decrease by one" (click)="decreaseProtein()">
+                <mat-icon><i class="material-icons">minimize</i></mat-icon>
+            </button>
+            <div class="number dim mx-2">{{ proteinValue }}</div>
+            <button class="nutrition-btn plus" aria-label="Increase by one" (click)="increaseProtein()">
+                <mat-icon><i class="material-icons">add</i></mat-icon>
+            </button>
+        </div>
+    </div>
+    <mat-dialog-actions align="end">
+        <button type="button" mat-button mat-dialog-close>Cancel</button>
+        <button type="submit" mat-raised-button color="success" (click)="update()">Update</button>
+    </mat-dialog-actions>
+</div>

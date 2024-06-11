@@ -1,0 +1,123 @@
+<mat-card class="w-100">
+    <mat-card-content>
+        <div class="px-5">
+            <h6 mat-dialog-title class="px-0 text-primary">
+                Plan Form
+            </h6>
+            <form class="mt-3" [formGroup]="createForm" (ngSubmit)="onGeneratePlan(createForm)">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <mat-form-field class="w-100 fs-16" appearance="outline">
+                            <mat-label>Plan Name</mat-label>
+                            <input matInput type="text" formControlName="planName">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Plan Category</mat-label>
+                            <mat-select formControlName="planCategory">
+                                <input type="text" autocomplete="off" matInput appSelectSearch
+                                    [searchList]="planCategories()?.data || []" [filterKeys]="['planName']"
+                                    class="px-3 py-4 mat-filter-menu" style="font-size: 16px;font-weight: 400;"
+                                    placeholder="Search..." />
+                                <mat-option *ngFor="let item of planCategories()?.data" [value]="item.planID">
+                                    {{item.planName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                    </div>
+                    <div class="col-lg-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Meals Type</mat-label>
+                            <mat-select multiple formControlName="mealsType">
+                                <input type="text" autocomplete="off" matInput appSelectSearch
+                                    [searchList]="allMealTypes()?.data || []" [filterKeys]="['typeName']"
+                                    class="px-3 py-4 mat-filter-menu" style="font-size: 16px;font-weight: 400;"
+                                    placeholder="Search..." />
+                                <mat-option *ngFor="let item of allMealTypes()?.data" [value]="item">
+                                    {{item.typeName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                    </div>
+                    <div class="col-lg-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Plan Days</mat-label>
+                            <mat-select multiple formControlName="planDays">
+                                <input type="text" autocomplete="off" matInput appSelectSearch
+                                    [searchList]="allPlanDays()?.data || []" [filterKeys]="['name']"
+                                    class="px-3 py-4 mat-filter-menu" style="font-size: 16px;font-weight: 400;"
+                                    placeholder="Search..." />
+                                <mat-option *ngFor="let item of allPlanDays()?.data" [value]="item">
+                                    {{item.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-4">
+                        <mat-form-field class="w-100 fs-16" appearance="outline">
+                            <mat-label>Week Count</mat-label>
+                            <input matInput type="number" formControlName="daysCount"
+                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-4">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Start Date</mat-label>
+                            <input (click)="picker.open()" matInput [matDatepicker]="picker"
+                                formControlName="startDate">
+                            <mat-datepicker-toggle matIconSuffix [for]="picker">
+                            </mat-datepicker-toggle>
+                            <mat-datepicker touchUi #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-4">
+                        <mat-form-field class="w-100 fs-16" appearance="outline">
+                            <mat-label>Start Day</mat-label>
+                            <input matInput type="text" formControlName="startDay">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="flex-between">
+                    <mat-slide-toggle formControlName="isActive">Active Plan</mat-slide-toggle>
+                    <button mat-raised-button class="me-8 mb-8" color="primary" type="submit"
+                        [disabled]="createForm.invalid">Generate Plan</button>
+                </div>
+            </form>
+        </div>
+    </mat-card-content>
+</mat-card>
+<mat-card class="w-100" *ngIf="createForm.value.lines?.length">
+    <mat-card-content>
+        <div class="px-5">
+            <div class="flex-between">
+                <h6 mat-dialog-title class="px-0 text-primary">
+                    Plan Meals
+                </h6>
+                <button mat-raised-button class="me-8 mb-8" (click)="selectMeals()" color="primary" type="button">
+                    Select Meals
+                </button>
+            </div>
+            <generic-table [TABLE_DATA]="{data:createForm.value.lines}" [columns]="planMealColumns">
+            </generic-table>
+        </div>
+    </mat-card-content>
+</mat-card>
+<mat-card class="w-100" *ngIf="createForm.value.planPrice?.length">
+    <mat-card-content>
+        <div class="px-5" *ngIf="priceListFlag">
+            <h6 mat-dialog-title class="px-0 text-primary">
+                Plan Price
+            </h6>
+            <generic-table [TABLE_DATA]="{data:priceList}" [columns]="planPriceColumns" [actions]="actions"
+                (update)="updatePrice($event)">
+            </generic-table>
+        </div>
+        <div class="d-flex justify-content-end align-items-center">
+            <button mat-raised-button class="me-8 mb-8" color="success" type="button" (click)="submitPlan(createForm)"
+                [disabled]="createForm.invalid">Submit Plan</button>
+        </div>
+    </mat-card-content>
+</mat-card>

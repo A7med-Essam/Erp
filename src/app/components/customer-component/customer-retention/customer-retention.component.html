@@ -1,0 +1,37 @@
+<div class="my-4">
+    <mat-card class="w-100">
+        <mat-card-content>
+            <div class="flex-between mb-4">
+                <h4 class="mb-3">Table Filters</h4>
+                <div>
+                    <button mat-raised-button color="help" class="mx-1" (click)="export()"
+                        [disabled]="!Permissions.CustomersRetention.Export">Export Filter</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <mat-form-field class="mx-1" appearance="outline">
+                        <mat-label>Search By Date Ranage</mat-label>
+                        <mat-date-range-input [rangePicker]="picker" (click)="picker.open()"
+                            [disabled]="!Permissions.CustomersRetention.Search">
+                            <input matStartDate matInput [(ngModel)]="DateFrom" placeholder="Start date" />
+                            <input matEndDate matInput [(ngModel)]="DateTo" placeholder="End date"
+                                (dateChange)="filter($event)" />
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker touchUi #picker></mat-date-range-picker>
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="w-100">
+        <mat-card-content>
+            <h4 class="mb-56">Customers Retention Table</h4>
+            <generic-table [TABLE_DATA]="TABLE_DATA()" [columns]="columns" [pageSizeOptions]="[10, 25, 50, 100, 500]"
+                [components]="{filter: true,columns: true,export: Permissions.CustomersRetention.Export, index:true}"
+                (PaginateOptions)="Paginate($event)">
+            </generic-table>
+        </mat-card-content>
+    </mat-card>
+</div>

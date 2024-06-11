@@ -1,0 +1,447 @@
+<mat-card class="w-100">
+    <mat-card-content>
+        <h4 class="mb-3">Table Filters</h4>
+        <div class="row">
+            <div class="col-sm-6">
+                <mat-form-field class="mx-1" appearance="outline">
+                    <input matInput [disabled]="!Permissions.SubscriptionManager.Search"
+                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                        (keyup.enter)="GetData(SID,Phone)" (blur)="GetData(SID,Phone)" placeholder="Search By SID" #SID>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-6">
+                <mat-form-field class="mx-1" appearance="outline">
+                    <input matInput [disabled]="!Permissions.SubscriptionManager.Search"
+                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                        (keyup.enter)="filterByPhone(Phone,SID)" (blur)="filterByPhone(Phone,SID)"
+                        placeholder="Search By Phone" #Phone>
+                </mat-form-field>
+            </div>
+            <div class="col-12 text-end" *ngIf="SUBSCRIPTION_DATA()?.data">
+                <button mat-raised-button color="help" class="mx-1" (click)="export()"
+                    [disabled]="!Permissions.Customers.Export">Export Plan</button>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+<div class="row m-0" *ngIf="!isFilterByPhone">
+    <div class="col-lg-8">
+        <mat-card class="mat-mdc-card mdc-card cardWithShadow"
+            *ngIf="!SUBSCRIPTION_DATA()?.loading && SUBSCRIPTION_DATA()?.data">
+            <mat-card-content class="mat-mdc-card-content p-b-30 p-t-24 m-b-20">
+                <div class="flex-between">
+                    <mat-card-title class="mat-mdc-card-title">Subscription Header</mat-card-title>
+                    <button mat-mini-fab color="primary" [matMenuTriggerFor]="editMenu">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <mat-menu #editMenu="matMenu">
+                        <button mat-menu-item (click)="changeName()"
+                            [disabled]="!Permissions.SubscriptionActions.EditCustomerData">
+                            <mat-icon><i class="material-icons">drive_file_rename_outline</i></mat-icon>
+                            <span>Change Customer Name</span>
+                        </button>
+                        <button mat-menu-item (click)="changePhone()"
+                            [disabled]="!Permissions.SubscriptionActions.EditCustomerData">
+                            <mat-icon><i class="material-icons">phone_in_talk</i></mat-icon>
+                            <span>Update Customer Phones</span>
+                        </button>
+                        <button mat-menu-item (click)="changeAddress()"
+                            [disabled]="!Permissions.SubscriptionActions.EditCustomerData">
+                            <mat-icon><i class="material-icons">edit_location_alt</i></mat-icon>
+                            <span>Update Customer Address</span>
+                        </button>
+                        <button mat-menu-item (click)="changeBranchDriver()"
+                            [disabled]="!Permissions.SubscriptionActions.ChangeDeliveryDetails">
+                            <mat-icon><i class="material-icons">delivery_dining</i></mat-icon>
+                            <span>Update Delivery Details</span>
+                        </button>
+                        <button mat-menu-item (click)="changeNotes()"
+                            [disabled]="!Permissions.SubscriptionActions.UpdateNotes">
+                            <mat-icon><i class="material-icons">sticky_note_2</i></mat-icon>
+                            <span>Update Notes</span>
+                        </button>
+                        <button mat-menu-item (click)="changeDeliveryNotes()"
+                            [disabled]="!Permissions.SubscriptionActions.ChangeDeliveryNotes">
+                            <mat-icon><i class="material-icons">new_releases</i></mat-icon>
+                            <span>Update Delivery Notes</span>
+                        </button>
+                        <button mat-menu-item (click)="changeNutritions()"
+                            [disabled]="!Permissions.SubscriptionActions.UpdateNutiration">
+                            <mat-icon><i class="material-icons">spa</i></mat-icon>
+                            <span>Update Nutritions</span>
+                        </button>
+                    </mat-menu>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center"><span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="user" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Customer Name</h6>
+                                    <span class="mat-body-1">
+                                        {{SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.customerName}}</span>
+                                </div>
+
+                                <div>
+                                    <div class="bg-light rounded f-w-500 p-6 p-y-4 f-s-12 mb-1 text-center">
+                                        <div class="my-1">#CID:
+                                            {{SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.customerID}} - #SID:
+                                            {{SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.subscriptionsID}}</div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center flex-wrap justify-content-end"><span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="phone" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Customer Phone</h6>
+                                    <span class="mat-body-1">
+                                        {{SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.phone?.phone}}</span>
+                                </div>
+                                <div class="bg-light rounded f-w-500 p-6 p-y-4 f-s-12 my-2">
+                                    Address: {{SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.adress?.adress}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center"><span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="calendar" class="feather-base text-white mb-sm"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Create At</h6><span
+                                        class="mat-body-1">{{SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.createDate |
+                                        date}}</span>
+                                </div>
+
+                                <div class="bg-light rounded f-w-500 p-6 p-y-4 f-s-12 my-2">
+                                    Branch: {{SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.branch?.branchName}}
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center"><span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="truck" class="feather-base text-white mb-sm"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Last Delivery Day</h6><span
+                                        class="mat-body-1">{{SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.lastDeliveryDay}}</span>
+                                </div>
+                                <div class="bg-light rounded f-w-500 p-6 p-y-4 f-s-12 my-2">
+                                    Driver: {{SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.driver?.driverName}}
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12" *ngIf="SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.mealTypes">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center"><span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="file-text" class="feather-base text-white mb-sm"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Meal Types</h6><span
+                                        class="mat-body-1">{{SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.mealTypes?.split("|")?.join("
+                                        - ")}}</span>
+                                </div>
+                                <div>
+                                    <div class="bg-light rounded f-w-500 p-6 p-y-4 f-s-12 mb-1 text-center">
+                                        {{SUBSCRIPTION_DATA()?.data?.subscriptionDetails?.length}} Meals
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12" *ngIf="SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.deliveryDays">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center"><span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="globe" class="feather-base text-white mb-sm"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Delivery Days</h6><span
+                                        class="mat-body-1">{{SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.deliveryDays?.split("|")?.join("
+                                        - ")}}</span>
+                                </div>
+                                <div>
+                                    <div class="bg-light rounded f-w-500 p-6 p-y-4 f-s-12 mb-1 text-center">
+                                        {{SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.customerType}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12" *ngIf="SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.notes">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center"><span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="alert-circle" class="feather-base text-white mb-sm"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Notes</h6><span
+                                        class="mat-body-1">{{SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.notes}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="col-lg-4">
+        <mat-card class="mat-mdc-card mdc-card cardWithShadow  text-white" [ngClass]="{'bg-success': SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.status == SubscriptionStatusEnum.Active,
+        'bg-primary': SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.status == SubscriptionStatusEnum.Expired,
+        'bg-warning': SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.status == SubscriptionStatusEnum.Hold}"
+            *ngIf="!SUBSCRIPTION_DATA()?.loading && SUBSCRIPTION_DATA()?.data">
+            <mat-card-content class="mat-mdc-card-content p-32">
+                <div class="d-flex">
+                    <mat-card-title class="mat-mdc-card-title">Subscription Status</mat-card-title>
+                    <div class="m-l-auto"><button
+                            [matMenuTriggerFor]="SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.status != SubscriptionStatusEnum.Expired ? SubscriptionActionMenu: null"
+                            class="shadow-none bg-white icon-48 mdc-fab mat-mdc-fab mat-accent mat-mdc-button-base"
+                            mat-button-is-fab="true"><span
+                                class="mat-mdc-button-persistent-ripple mdc-fab__ripple"></span><span
+                                class="mdc-button__label">
+                                <i-feather
+                                    [name]="
+                                SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.status == SubscriptionStatusEnum.Active ?  'thumbs-up': 
+                                SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.status == SubscriptionStatusEnum.Expired ? 'x-octagon' : 'slash'"
+                                    class="feather-base mb-sm"
+                                    [ngClass]="{'text-success': SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.status == SubscriptionStatusEnum.Active,
+                                'text-primary': SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.status == SubscriptionStatusEnum.Expired,
+                                'text-warning': SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.status == SubscriptionStatusEnum.Hold}"
+                                    *ngIf="!SUBSCRIPTION_DATA()?.loading && SUBSCRIPTION_DATA()?.data"></i-feather>
+                            </span><span class="mat-mdc-focus-indicator"></span><span
+                                class="mat-mdc-button-touch-target"></span></button></div>
+                </div>
+                <h4 class="mat-headline-5 text-white m-b-0 m-t-30">
+                    {{SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.status}}
+                </h4>
+                <mat-menu #SubscriptionActionMenu="matMenu">
+                    <button mat-menu-item
+                        *ngIf="SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.status != SubscriptionStatusEnum.Hold"
+                        (click)="Hold()" [disabled]="!Permissions.SubscriptionActions.hold">
+                        <mat-icon class="text-secondary">back_hand</mat-icon>
+                        <span class="text-secondary">Hold Plan</span>
+                    </button>
+                    <button mat-menu-item
+                        *ngIf="SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.status != SubscriptionStatusEnum.Active || holdSubscriptions.length"
+                        (click)="Activate()" [disabled]="!Permissions.SubscriptionActions.Active">
+                        <mat-icon class="text-success">verified</mat-icon>
+                        <span class="text-success">Activate</span>
+                    </button>
+                    <button mat-menu-item *ngIf="!SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.isStatrDeliverd &&
+                        SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.status != SubscriptionStatusEnum.Hold &&
+                        !holdSubscriptions.length && !restrictedSubscriptions.length" (click)="ChangeStartDate()"
+                        [disabled]="!Permissions.SubscriptionActions.ChangeStartDate">
+                        <mat-icon class="text-dark">edit_calendar</mat-icon>
+                        <span class="text-dark">Change Start Date</span>
+                    </button>
+                    <button mat-menu-item (click)="Restrict()" [disabled]="!Permissions.SubscriptionActions.Restrict"
+                        *ngIf="!holdSubscriptions.length && SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.status != SubscriptionStatusEnum.Hold">
+                        <mat-icon><i class="material-icons">auto_fix_high</i></mat-icon>
+                        <span>Restrict Plan</span>
+                    </button>
+                    <button mat-menu-item (click)="Unrestrict()"
+                        [disabled]="!Permissions.SubscriptionActions.Unrestrict" *ngIf="restrictedSubscriptions.length">
+                        <mat-icon><i class="material-icons">auto_fix_off</i></mat-icon>
+                        <span>Unrestrict Days</span>
+                    </button>
+                </mat-menu>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="mat-mdc-card mdc-card cardWithShadow bg-primary text-white"
+            *ngIf="!SUBSCRIPTION_DATA()?.loading && SUBSCRIPTION_DATA()?.data">
+            <mat-card-content class="mat-mdc-card-content p-32">
+                <div class="d-flex">
+                    <mat-card-title class="mat-mdc-card-title">Plan Expression</mat-card-title>
+                    <div class="m-l-auto"><button
+                            [matMenuTriggerFor]="SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.status != SubscriptionStatusEnum.Expired ? actionMenu: null"
+                            mat-button-ripple-uninitialized="" mat-fab=""
+                            class="shadow-none bg-white icon-48 mdc-fab mat-mdc-fab mat-accent mat-mdc-button-base"
+                            mat-button-is-fab="true"><span
+                                class="mat-mdc-button-persistent-ripple mdc-fab__ripple"></span><span
+                                class="mdc-button__label">
+                                <i-feather name="star" class="feather-base text-primary mb-sm"></i-feather>
+                            </span><span class="mat-mdc-focus-indicator"></span><span
+                                class="mat-mdc-button-touch-target"></span></button></div>
+                </div>
+                <h4 class="mat-headline-5 text-white m-b-0 m-t-30">
+                    {{SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.plan}}</h4>
+                <mat-menu #actionMenu="matMenu">
+                    <button mat-menu-item (click)="ChangeMealTypes()"
+                        [disabled]="!Permissions.SubscriptionActions.ChangeMealTypes">
+                        <mat-icon>restaurant-menu</mat-icon>
+                        <span>Change Meal Types</span>
+                    </button>
+                    <button mat-menu-item (click)="ChangeDeliveryDays()"
+                        [disabled]="!Permissions.SubscriptionActions.ChangeDeliveryDays">
+                        <mat-icon>alarm-on</mat-icon>
+                        <span>Change Delivery Days</span>
+                    </button>
+                    <button mat-menu-item (click)="ChangeDeliveryDetails()"
+                        [disabled]="!Permissions.SubscriptionActions.ChangeDeliveryDetails">
+                        <mat-icon>edit_location_alt</mat-icon>
+                        <span>Change Delivery Details</span>
+                    </button>
+                    <button mat-menu-item (click)="ChangeDayStatus()"
+                        [disabled]="!Permissions.SubscriptionActions.ChangeDayState">
+                        <mat-icon>hotel_class</mat-icon>
+                        <span>Change Day Status</span>
+                    </button>
+                    <button mat-menu-item (click)="Dislike()" [disabled]="!Permissions.SubscriptionActions.Dislike">
+                        <mat-icon>no_meals_ouline</mat-icon>
+                        <span>Dislike Meals</span>
+                    </button>
+                    <button mat-menu-item (click)="AutoDislike()" [disabled]="!Permissions.SubscriptionActions.Dislike">
+                        <mat-icon>thumb_down_off_alt</mat-icon>
+                        <span>Auto Dislike</span>
+                    </button>
+                </mat-menu>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="mat-mdc-card mdc-card cardWithShadow bg-primary text-white"
+            *ngIf="!SUBSCRIPTION_DATA()?.loading && SUBSCRIPTION_DATA()?.data">
+            <mat-card-content class="mat-mdc-card-content p-32">
+                <div class="d-flex py-1">
+                    <div>
+                        <mat-card-title class="mat-mdc-card-title">Remaining Days
+                            {{SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.remaingDays}}</mat-card-title>
+                        <mat-card-subtitle>
+                            <h6 class="mat-subtitle-2 op-5 text-white">Durations
+                                {{SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.durations}}</h6>
+                        </mat-card-subtitle>
+                    </div>
+                    <div class="m-l-auto"><button [matMenuTriggerFor]="actionMenu2" mat-button-ripple-uninitialized=""
+                            mat-fab=""
+                            class="shadow-none bg-white icon-48 mdc-fab mat-mdc-fab mat-accent mat-mdc-button-base"
+                            mat-button-is-fab="true"><span
+                                class="mat-mdc-button-persistent-ripple mdc-fab__ripple"></span><span
+                                class="mdc-button__label">
+                                <i-feather name="clock" class="feather-base text-primary mb-sm"></i-feather>
+                            </span><span class="mat-mdc-focus-indicator"></span><span
+                                class="mat-mdc-button-touch-target"></span></button></div>
+                </div>
+                <mat-menu #actionMenu2="matMenu">
+                    <button mat-menu-item
+                        *ngIf="SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.status != SubscriptionStatusEnum.Expired"
+                        (click)="Detach()" [disabled]="!Permissions.SubscriptionActions.Deduct">
+                        <mat-icon><i class="material-icons">indeterminate_check_box</i></mat-icon>
+                        <span>Detach From Plan</span>
+                    </button>
+                    <button mat-menu-item
+                        *ngIf="SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.status != SubscriptionStatusEnum.Expired"
+                        (click)="Extend()" [disabled]="!Permissions.SubscriptionActions.Extend">
+                        <mat-icon><i class="material-icons">add_circle_outline</i></mat-icon>
+                        <span>Extend Plan</span>
+                    </button>
+                    <button mat-menu-item
+                        *ngIf="SUBSCRIPTION_DATA()?.data?.subscriptionHeader?.status != SubscriptionStatusEnum.Expired"
+                        (click)="Delete()" [disabled]="!Permissions.SubscriptionActions.DeleteDays">
+                        <mat-icon><i class="material-icons">delete_forever</i></mat-icon>
+                        <span>Delete Plan Days</span>
+                    </button>
+                    <button mat-menu-item (click)="Renew()" [disabled]="!Permissions.SubscriptionActions.Renew">
+                        <mat-icon><i class="material-icons">autorenew</i></mat-icon>
+                        <span>Renew Plan</span>
+                    </button>
+                    <button mat-menu-item (click)="Migrate()" [disabled]="!Permissions.SubscriptionActions.Migrate">
+                        <mat-icon><i class="material-icons">auto_mode</i></mat-icon>
+                        <span>Migrate</span>
+                    </button>
+                    <button mat-menu-item (click)="Merge()" [disabled]="!Permissions.SubscriptionActions.Merge">
+                        <mat-icon><i class="material-icons">share</i></mat-icon>
+                        <span>Merge</span>
+                    </button>
+                </mat-menu>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+
+<mat-card class="w-100" *ngIf="!isFilterByPhone">
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="currentTabIndex">
+        <mat-tab label="Subscription Details" [disabled]="!Permissions.SubscriptionManager.View">
+            <mat-card-content>
+                <mat-chip-listbox *ngIf="SUBSCRIPTION_DATA()?.data?.subscriptionDetails" (change)="onChipChange($event)"
+                    class="mb-52" aria-label="Delivery Status Selection">
+                    <mat-chip-option selected value="All" color="primary"
+                        *ngIf="SUBSCRIPTION_DATA()?.data?.subscriptionDetails">
+                        All Status
+                    </mat-chip-option>
+                    <mat-chip-option [value]="DeliveryStatusEnum.Deliveried" color="success"
+                        *ngIf="deliveredSubscriptions.length">{{deliveredSubscriptions.length}}
+                        Deliveried
+                    </mat-chip-option>
+                    <mat-chip-option [value]="DeliveryStatusEnum.Pending" color="accent"
+                        *ngIf="pendingSubscriptions.length">{{pendingSubscriptions.length}}
+                        Pending
+                    </mat-chip-option>
+                    <mat-chip-option [value]="DeliveryStatusEnum.Resticited" color="warning"
+                        *ngIf="restrictedSubscriptions.length">{{restrictedSubscriptions.length}}
+                        Restricted
+                    </mat-chip-option>
+                    <mat-chip-option [value]="DeliveryStatusEnum.Hold" color="secondary"
+                        *ngIf="holdSubscriptions.length">{{holdSubscriptions.length}}
+                        Hold
+                    </mat-chip-option>
+                    <mat-chip-option [value]="DeliveryStatusEnum.Canceld" color="warn"
+                        *ngIf="cancelledSubscriptions.length">{{cancelledSubscriptions.length}}
+                        Canceled
+                    </mat-chip-option>
+                </mat-chip-listbox>
+                <app-subscription-details (selectedRows)="getSelectedRows($event)"
+                    [subscriptionHeader]="SUBSCRIPTION_DATA()?.data?.subscriptionHeader"
+                    (onManipulateData)="getPlanDays($event)" [FilterChip]="FilterChip"
+                    (deliveryStatusStatics)="getStaticsOfDeliveryStatus($event)" [currentInvoice]="currentInvoice"
+                    (RefreshPlan)="RefreshPlan($event)"></app-subscription-details>
+                <div *ngIf="SUBSCRIPTION_DATA()?.messages?.length && SID.value"
+                    class="alert alert-warning alert-text-warning d-flex fs-14 align-items-start rounded mb-16"
+                    role="alert">
+                    <i-feather name="alert-triangle" class="text-warning feather-base me-12"></i-feather>
+                    <div>
+                        <p class="mb-8 fw-medium fs-16">Warning</p>
+                        <span *ngFor="let msg of SUBSCRIPTION_DATA()?.messages" class="">{{msg}} — <span
+                                class="fw-medium">{{SID.value}}</span></span>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-tab>
+        <mat-tab label="Customer Log" [disabled]="!Permissions.SubscriptionActions.ViewLog">
+            <app-customer-log></app-customer-log>
+        </mat-tab>
+        <mat-tab label="Delivery Log" [disabled]="!Permissions.SubscriptionActions.ViewDeliveryLog">
+            <app-delivery-log></app-delivery-log>
+        </mat-tab>
+        <mat-tab label="Invoice Log" [disabled]="!Permissions.SubscriptionActions.ViewInvoiceLog">
+            <app-invoice-log (invoice)="filterByInvoice($event)"></app-invoice-log>
+        </mat-tab>
+        <mat-tab label="Delivery Note Log" [disabled]="!Permissions.SubscriptionActions.ViewDeliveryNoteLog">
+            <app-delivery-note-log></app-delivery-note-log>
+        </mat-tab>
+        <mat-tab label="Dislike Meals" [disabled]="!Permissions.SubscriptionActions.ViewDislikeLog">
+            <app-dislike-log [SID]="currentSID | toInt"></app-dislike-log>
+        </mat-tab>
+    </mat-tab-group>
+</mat-card>
+
+<app-subscription-by-phone *ngIf="isFilterByPhone" [Phone]="Phone.value" (sid)="searchBySID($event)">
+</app-subscription-by-phone>
+

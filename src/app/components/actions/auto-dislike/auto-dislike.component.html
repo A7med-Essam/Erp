@@ -1,0 +1,39 @@
+<div class="px-5">
+    <h6 mat-dialog-title class="px-0">
+        Action Form <span class="text-primary">(AUTO DISLIKE)</span>
+    </h6>
+    <div class="row overflow-auto" style="height: 600px;">
+        <div class="col-lg-3 px-1">
+            <mat-card class="w-100">
+                <mat-card-content class="p-0">
+                    <generic-table [TABLE_DATA]="DislikeCategory()" [columns]="dislikeCategoryColumns"
+                        [components]="{selection: true}" (selected)="getSelectedRows($event)"
+                        [currentSelectedRows]="this.currentUserDislikeCategory"
+                        [currentSelectedProperty]="'dilikeCategoryID'">
+                    </generic-table>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div class="col-lg-5 px-1">
+            <mat-card class="w-100">
+                <mat-card-content class="p-0">
+                    <generic-table [TABLE_DATA]="{data:dislikes.mealsToChange}" [columns]="columns">
+                    </generic-table>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div class="col-lg-4 px-1">
+            <mat-card class="w-100">
+                <mat-card-content class="p-0">
+                    <generic-table [TABLE_DATA]="{data:dislikes.mealsToSave}" [columns]="columns">
+                    </generic-table>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+    <mat-dialog-actions align="end">
+        <button type="button" mat-button mat-dialog-close>Cancel</button>
+        <button type="submit" mat-raised-button [disabled]="!this.dislikes.mealsToSave.length" (click)="onSubmit()"
+            color="success">Submit</button>
+    </mat-dialog-actions>
+</div>

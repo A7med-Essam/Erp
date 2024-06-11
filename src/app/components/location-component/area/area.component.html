@@ -1,0 +1,33 @@
+<div class="my-4">
+    <mat-card class="w-100">
+        <mat-card-content>
+            <div class="mb-2 d-flex justify-content-end">
+                <button mat-raised-button class="me-8 mb-8" [disabled]="!Permissions.Area.Create"
+                    (click)="AddOrUpdate()" color="success">Add Area</button>
+            </div>
+            <generic-table *ngIf="TABLE_DATA()?.data && TABLE_DATA()?.data?.length" [TABLE_DATA]="TABLE_DATA()"
+                [columns]="columns" [components]="{filter: true,columns: true,export: true, index:true}" [actions]="actions"
+                (delete)="deleteRow($event)" (update)="AddOrUpdate($event)">
+            </generic-table>
+            <div *ngIf="TABLE_DATA()?.data && !TABLE_DATA()?.data?.length && !TABLE_DATA()?.messages?.length"
+                class="alert alert-warning alert-text-warning d-flex fs-14 align-items-start rounded mb-16"
+                role="alert">
+                <i-feather name="alert-triangle" class="text-warning feather-base me-12"></i-feather>
+                <div>
+                    <p class="mb-8 fw-medium fs-16">Warning</p>
+                    <span class="">There's no area details</span>
+                </div>
+            </div>
+
+            <div *ngIf="TABLE_DATA()?.messages?.length"
+                class="alert alert-warning alert-text-warning d-flex fs-14 align-items-start rounded mb-16"
+                role="alert">
+                <i-feather name="alert-triangle" class="text-warning feather-base me-12"></i-feather>
+                <div>
+                    <p class="mb-8 fw-medium fs-16">Warning</p>
+                    <div *ngFor="let msg of TABLE_DATA()?.messages" class="">{{msg}}</div>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

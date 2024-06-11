@@ -1,0 +1,38 @@
+<div class="p-5">
+    <div class="cdk-global-overlay-wrapper w-100 h-100" dir="ltr" style="justify-content: center; align-items: center;">
+        <div id="cdk-overlay-5" class="cdk-overlay-pane w-100 h-100" style=" position: static;">
+            <div tabindex="-1" class="mat-mdc-dialog-container mdc-dialog cdk-dialog-container mdc-dialog--open"
+                id="mat-mdc-dialog-1" role="dialog" aria-modal="true" aria-labelledby="mat-mdc-dialog-title-1"
+                style="--mat-dialog-transition-duration: 0ms;">
+                <div class="mdc-dialog__container">
+                    <div class="mat-mdc-dialog-surface mdc-dialog__surface">
+                        <div class="mx-4">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 mat-dialog-title=""
+                                    class="mat-mdc-dialog-title mdc-dialog__title mat-subtitle-1 ps-3">
+                                    Manage Roles
+                                </h5>
+                                <mat-icon class="text-secondary close-modal-button" (click)="closeModal()" matSuffix>
+                                    close</mat-icon>
+                            </div>
+                            <div mat-dialog-content=""
+                                class="mat-mdc-dialog-content mdc-dialog__content mat-subtitle-2 lh-16 py-0">
+                                Assign Role to {{data.email}}.
+                            </div>
+                            <div class="px-5 py-2">
+                                <generic-table [TABLE_DATA]="{data:roles}" [columns]="columns" [currentSelectedRows]="assignedRoles"
+                                    [currentSelectedProperty]="'roleName'"
+                                    [components]="{selection: true}" (selected)="getSelectedRows($event)">
+                                </generic-table>
+                            </div>
+                            <mat-dialog-actions align="end">
+                                <button type="button" mat-button mat-dialog-close>Cancel</button>
+                                <button type="submit" mat-raised-button color="success" (click)="assignRoles()">Assign</button>
+                            </mat-dialog-actions>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

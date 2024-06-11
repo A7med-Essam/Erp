@@ -1,0 +1,21 @@
+.mat-mdc-list-item.mdc-list-item--with-leading-icon.mdc-list-item--with-two-lines {
+  border-radius: 12px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  .mdc-list-item__start,
+  .mdc-list-item__primary-text,
+  .mdc-list-item__secondary-text {
+    transition: color 0.3s ease-in-out;
+  }
+
+  &:hover,
+  &.active {
+    background-color: #03c9d7;
+    .mdc-list-item__start,
+    .mdc-list-item__primary-text,
+    .mdc-list-item__secondary-text {
+      color: #fff;
+    }
+  }
+}

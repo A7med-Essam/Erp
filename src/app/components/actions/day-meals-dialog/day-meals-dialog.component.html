@@ -1,0 +1,12 @@
+<mat-card class="w-100 m-0">
+    <mat-card-content *ngIf="row.meals.length">
+        <h4 class="mb-56">Delivery Meals at {{row.meals[0].dayName}} - {{row.deliveryDate | date :'dd/MM/yyyy'}}</h4>
+        <generic-table [TABLE_DATA]="{data:row.meals}" [columns]="columns" [pageSizeOptions]="[]" [actions]="actions"
+            [components]="{filter: false,columns: false,export: false,selection: false}" (update)="updateRow($event)"
+            (changeMeal)="changeMeal($event)">
+        </generic-table>
+        <mat-dialog-actions align="end">
+            <button color="warn" type="button" mat-button mat-dialog-close>Cancel</button>
+        </mat-dialog-actions>
+    </mat-card-content>
+</mat-card>

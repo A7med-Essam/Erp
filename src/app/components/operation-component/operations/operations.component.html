@@ -1,0 +1,62 @@
+<div class="my-4">
+    <mat-card class="w-100">
+        <mat-card-content>
+            <div class="flex-between mb-4">
+                <h4 class="mb-3">Table Filters</h4>
+                <div>
+                    <mat-slide-toggle [checked]="isPrintDate" [disabled]="!Permissions.Operations.Search"><span class="text-muted fw-bold">Print
+                            Date</span></mat-slide-toggle>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <mat-form-field class="mx-1" appearance="outline">
+                        <mat-label>Search By Date Ranage</mat-label>
+                        <mat-date-range-input [rangePicker]="picker" (click)="picker.open()" [disabled]="!Permissions.Operations.Search">
+                            <input matStartDate matInput [(ngModel)]="DateFrom" placeholder="Start date" />
+                            <input matEndDate matInput [(ngModel)]="DateTo" placeholder="End date" />
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker touchUi #picker></mat-date-range-picker>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-4">
+                    <mat-form-field class="mx-1" appearance="outline">
+                        <mat-label>Enter Customer ID</mat-label>
+                        <input matInput maxlength="15" [(ngModel)]="selectedCID" [disabled]="!Permissions.Operations.Search"
+                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" (keyup.enter)="filter()">
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-4">
+                    <mat-form-field class="mx-1" appearance="outline">
+                        <mat-label>Enter Subscription ID</mat-label>
+                        <input matInput maxlength="15" [(ngModel)]="selectedSID" [disabled]="!Permissions.Operations.Search"
+                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" (keyup.enter)="filter()">
+                    </mat-form-field>
+                </div>
+                <div class="col-12 flex-between">
+                    <div>
+                        <button mat-raised-button color="primary" class="mx-1" [disabled]="!selectedRows.length || !Permissions.Operations.ChangeDeliveryState"
+                            (click)="update()">
+                            {{selectedRows.length}} Rows Selected To Update Day State
+                        </button>
+                        <button mat-raised-button color="help" class="mx-1" (click)="export()" [disabled]="!Permissions.Operations.Export">Export Filter</button>
+                    </div>
+                    <div>
+                        <button mat-raised-button color="secondary" class="mx-1" (click)="reset()" [disabled]="!Permissions.Operations.Search">Reset</button>
+                        <button mat-raised-button color="accent" class="mx-1" (click)="filter()" [disabled]="!Permissions.Operations.Search">Search</button>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="w-100" *ngIf="!isUpdating">
+        <mat-card-content>
+            <h4 class="mb-56">Operations Table</h4>
+            <generic-table [TABLE_DATA]="TABLE_DATA()" [columns]="columns" [pageSizeOptions]="[10, 25, 50, 100, 500]"
+                [components]="{filter: true,columns: true,export: Permissions.Operations.Export, selection:true, index:true}"
+                (PaginateOptions)="Paginate($event)" (selected)="getSelectedRows($event)">
+            </generic-table>
+        </mat-card-content>
+    </mat-card>
+</div>

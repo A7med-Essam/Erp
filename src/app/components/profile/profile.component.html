@@ -1,0 +1,127 @@
+<mat-card>
+    <mat-card-content class="p-0">
+        <mat-tab-group [selectedIndex]="currentTabIndex">
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="mx-2">supervised_user_circle</mat-icon>
+                    Account
+                </ng-template>
+
+                <mat-card-content class="mat-mdc-card-content p-y-24 b-t-1 ng-star-inserted">
+                    <div class="row">
+                        <div class="col-12">
+                            <mat-card class="mat-mdc-card mdc-card cardWithShadow">
+                                <mat-card-content class="mat-mdc-card-content">
+                                    <mat-card-title class="mat-mdc-card-title">
+                                        Personal Details
+                                    </mat-card-title>
+                                    <mat-card-subtitle class="mat-mdc-card-subtitle mat-body-1">
+                                        To change your personal detail , edit and save from here
+                                    </mat-card-subtitle>
+                                    <form [formGroup]="profileForm" (ngSubmit)="updateProfile(profileForm)">
+                                        <div class="row m-t-24">
+                                            <div class="col-lg-6">
+                                                <mat-form-field class="w-100 fs-16" appearance="outline">
+                                                    <mat-label>First Name</mat-label>
+                                                    <input matInput type="text" formControlName="firstName">
+                                                    <mat-icon class="text-secondary"
+                                                        matSuffix>alternate_email</mat-icon>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <mat-form-field class="w-100 fs-16" appearance="outline">
+                                                    <mat-label>Last Name</mat-label>
+                                                    <input matInput type="text" formControlName="lastName">
+                                                    <mat-icon class="text-secondary"
+                                                        matSuffix>alternate_email</mat-icon>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <mat-form-field class="w-100 fs-16" appearance="outline">
+                                                    <mat-label>Email</mat-label>
+                                                    <input matInput type="email" formControlName="email">
+                                                    <mat-icon class="text-secondary" matSuffix>email</mat-icon>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <mat-form-field class="w-100 fs-16" appearance="outline">
+                                                    <mat-label>Phone</mat-label>
+                                                    <input matInput type="text" formControlName="phoneNumber"
+                                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+                                                    <mat-icon class="text-secondary" matSuffix>phone</mat-icon>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="text-right p-24 p-t-0">
+                                            <button mat-raised-button mat-button color="primary"
+                                                [disabled]="profileForm.invalid">Save</button>
+                                        </div>
+                                    </form>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                    </div>
+                </mat-card-content>
+
+            </mat-tab>
+
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="mx-2">image_search</mat-icon>
+                    Profile Settings
+                </ng-template>
+                <mat-card-content>
+                    <mat-card>
+                        <mat-card-content class="mat-mdc-card-content p-y-24">
+                            <mat-card-title class="mat-mdc-card-title">Change Profile
+                            </mat-card-title><mat-card-subtitle class="mat-mdc-card-subtitle mat-body-1">Change your
+                                profile picture from here
+                            </mat-card-subtitle>
+                            <div class="text-center m-t-24">
+                                <img src="/assets/images/user2.webp" width="120" class="rounded-circle">
+                                <div class="m-t-24">
+                                    <button mat-button color="primary">Upload</button>
+                                </div>
+                                <span class="f-s-14 m-t-24 d-block">Allowed JPG, GIF or PNG. Max size of 800K</span>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </mat-card-content>
+            </mat-tab>
+
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="mx-2">security</mat-icon>
+                    Security
+                </ng-template>
+                <mat-card-content class="mat-mdc-card-content p-y-24 b-t-1">
+                    <mat-card>
+                        <mat-card-content class="mat-mdc-card-content p-y-24">
+                            <mat-card-title class="mat-mdc-card-title">Change Password</mat-card-title>
+                            <mat-card-subtitle class="mat-mdc-card-subtitle mat-body-1">To change your password please
+                                confirm here</mat-card-subtitle>
+                            <form [formGroup]="securityForm" (ngSubmit)="ChangePassword(securityForm)">
+                                <mat-form-field class="w-100 fs-16" appearance="outline">
+                                    <mat-label>Current Password</mat-label>
+                                    <input matInput type="password" formControlName="password">
+                                </mat-form-field>
+                                <mat-form-field class="w-100 fs-16" appearance="outline">
+                                    <mat-label>New Password</mat-label>
+                                    <input matInput type="password" formControlName="newPassword">
+                                </mat-form-field>
+                                <mat-form-field class="w-100 fs-16" appearance="outline">
+                                    <mat-label>Confirm Password</mat-label>
+                                    <input matInput type="password" formControlName="confirmNewPassword">
+                                </mat-form-field>
+                                <div class="text-right p-24 p-t-0">
+                                    <button mat-raised-button mat-button color="primary"
+                                        [disabled]="securityForm.invalid">Save</button>
+                                </div>
+                            </form>
+                        </mat-card-content>
+                    </mat-card>
+                </mat-card-content>
+            </mat-tab>
+        </mat-tab-group>
+    </mat-card-content>
+</mat-card>

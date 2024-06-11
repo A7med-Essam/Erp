@@ -1,0 +1,52 @@
+::ng-deep {
+    table {
+        .mat-mdc-text-field-wrapper {
+            border-radius: 0;
+        }
+
+        .mat-mdc-form-field-subscript-wrapper {
+            display: none;
+        }
+
+        .mat-focused {
+            input {
+                caret-color: #008a68 !important;
+            }
+        }
+
+        .mdc-text-field--focused .mdc-floating-label {
+            color: #008a68 !important;
+        }
+
+        .mdc-text-field--filled .mdc-line-ripple:after {
+            border-color: #008a68 !important;
+        }
+    }
+    .mat-divider{
+        margin:30px 100px !important;
+    }
+    .green-snackbar .mat-mdc-button.mat-mdc-snack-bar-action:not(:disabled){
+        color: #00d26a !important;
+    }
+}
+
+.table-custom {
+    --bs-table-color: rgb(63, 63, 63);
+    --bs-table-bg: #cddad7;
+    border-color: #68877f;
+}
+
+.img-container{
+    position: relative;
+    img{
+        position: absolute;
+        top: 50%;
+        left: 0%;
+        transform: translate(0%, -50%);
+        height: 100px;
+        object-fit: cover;
+        border-radius: 30px;
+        width: 100px;
+        padding: 5px;
+    }
+}

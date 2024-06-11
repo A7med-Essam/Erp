@@ -1,0 +1,7 @@
+<mat-card class="w-100" *ngIf="TABLE_DATA()?.data?.length;">
+  <mat-card-content>
+    <h4 class="mb-56">Last Payments</h4>
+    <generic-table [TABLE_DATA]="TABLE_DATA()" [columns]="columns">
+    </generic-table>
+  </mat-card-content>
+</mat-card>

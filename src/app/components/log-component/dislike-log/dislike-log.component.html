@@ -1,0 +1,23 @@
+<mat-card-content>
+    <generic-table *ngIf="TABLE_DATA()?.data && TABLE_DATA()?.data?.length" [TABLE_DATA]="TABLE_DATA()"
+        [columns]="columns" [components]="{filter: true,columns: true,export: true}" [actions]="actions"
+        (delete)="deleteRow($event)">
+    </generic-table>
+    <div *ngIf="TABLE_DATA()?.data && !TABLE_DATA()?.data?.length && !TABLE_DATA()?.messages?.length"
+        class="alert alert-warning alert-text-warning d-flex fs-14 align-items-start rounded mb-16" role="alert">
+        <i-feather name="alert-triangle" class="text-warning feather-base me-12"></i-feather>
+        <div>
+            <p class="mb-8 fw-medium fs-16">Warning</p>
+            <span class="">There's no dislike log details</span>
+        </div>
+    </div>
+
+    <div *ngIf="TABLE_DATA()?.messages?.length"
+        class="alert alert-warning alert-text-warning d-flex fs-14 align-items-start rounded mb-16" role="alert">
+        <i-feather name="alert-triangle" class="text-warning feather-base me-12"></i-feather>
+        <div>
+            <p class="mb-8 fw-medium fs-16">Warning</p>
+            <div *ngFor="let msg of TABLE_DATA()?.messages" class="">{{msg}}</div>
+        </div>
+    </div>
+</mat-card-content>

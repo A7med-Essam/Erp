@@ -1,0 +1,37 @@
+<mat-card class="mat-mdc-card mdc-card cardWithShadow overflow-hidden" *ngIf="subCount()?.data?.length; else noData">
+    <div class="row">
+        <div class="col-lg-3 col-sm-6 col-6 b-r-1 ng-star-inserted" *ngFor="let item of subCount()?.data">
+            <div class="p-30">
+                <button
+                    class=" bg-light-{{getColor(item.caption)}} icon-48 text-accent mat-accent mat-mdc-button-base border-0">
+                    <i-feather name="award" class="text-muted"></i-feather>
+                </button>
+                <h4 class="mat-title m-b-0 m-t-30 f-s-24 f-w-500"> {{item.subCount}}&nbsp;
+                    <span class="mat-body-1 text-{{getColor(item.caption)}}">{{item.caption.split(' ')[0] |
+                        titlecase}}</span>
+                </h4>
+                <small class="mat-body-1 text-muted"> {{item.caption | titlecase}} </small>
+            </div>
+        </div>
+    </div>
+</mat-card>
+
+<ng-template #noData>
+    <mat-card class="mat-mdc-card mdc-card cardWithShadow overflow-hidden">
+        <div class="row">
+            <div class="col-lg-3 col-sm-6 col-6 b-r-1 ng-star-inserted" *ngFor="let item of mockData">
+                <div class="p-30">
+                    <button
+                        class=" bg-light-{{getColor(item.caption)}} icon-48 text-accent mat-accent mat-mdc-button-base border-0">
+                        <i-feather name="award" class="text-muted"></i-feather>
+                    </button>
+                    <h4 class="mat-title m-b-0 m-t-30 f-s-24 f-w-500"> {{item.subCount}}&nbsp;
+                        <span class="mat-body-1 text-{{getColor(item.caption)}}">{{item.caption.split(' ')[0] |
+                            titlecase}}</span>
+                    </h4>
+                    <small class="mat-body-1 text-muted"> {{item.caption | titlecase}} </small>
+                </div>
+            </div>
+        </div>
+    </mat-card>
+</ng-template>

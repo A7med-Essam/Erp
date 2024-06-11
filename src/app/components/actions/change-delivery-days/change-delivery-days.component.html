@@ -1,0 +1,33 @@
+<div class="px-5">
+    <h6 mat-dialog-title class="px-0">
+        Action Form <span class="text-primary">(CHANGE DELIVERY DAYS)</span>
+    </h6>
+    <form class="mt-3" [formGroup]="dialogForm" (ngSubmit)="onSubmit(dialogForm)">
+        <mat-form-field appearance="outline">
+            <mat-label>Select Delivery Days</mat-label>
+            <mat-select multiple formControlName="deliveryDays">
+                <div class="select-all mx-1">
+                    <mat-checkbox selectAll [status]="CheckBoxStatus">Select All</mat-checkbox>
+                </div>
+                <input type="text" autocomplete="off" matInput appSelectSearch [searchList]="deliveryDays()?.data || []"
+                    [filterKeys]="['day_name']" class="px-3 py-4 mat-filter-menu"
+                    style="font-size: 16px;font-weight: 400;" placeholder="Search..." />
+                <mat-option checkSelect (statusChanged)="onCheckboxChanged($event)"
+                    *ngFor="let item of deliveryDays()?.data" [value]="item" [disabled]="!item.show">
+                    {{item.day_name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Notes</mat-label>
+            <textarea matInput rows="3" placeholder="Write your notes" value="Default Value"
+                formControlName="Notes"></textarea>
+        </mat-form-field>
+
+        <mat-dialog-actions align="end">
+            <button type="button" mat-button mat-dialog-close>Cancel</button>
+            <button type="submit" mat-raised-button [disabled]="dialogForm.invalid" color="success">Submit</button>
+        </mat-dialog-actions>
+    </form>
+</div>

@@ -1,0 +1,10 @@
+<mat-card class="w-100" *ngIf="TABLE_DATA()?.data?.length;">
+    <mat-card-content>
+        <h4 class="mb-56">Explore expiring subscriptions for today</h4>
+        <generic-table [TABLE_DATA]="TABLE_DATA()" [columns]="columns">
+        </generic-table>
+        <ng-template #noData>
+            <generic-table [TABLE_DATA]="{data:mockData}" [columns]="columns"></generic-table>
+        </ng-template>
+    </mat-card-content>
+</mat-card>

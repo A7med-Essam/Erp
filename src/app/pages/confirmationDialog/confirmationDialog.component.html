@@ -1,0 +1,36 @@
+<div class="cdk-overlay-container">
+    <div class="cdk-global-overlay-wrapper" dir="ltr" style="justify-content: center; align-items: center;">
+        <div id="cdk-overlay-5" class="cdk-overlay-pane" style="width: 290px; max-width: 80vw; position: static;">
+            <div tabindex="0" class="cdk-visually-hidden cdk-focus-trap-anchor" aria-hidden="true"></div>
+            <div tabindex="-1" class="mat-mdc-dialog-container mdc-dialog cdk-dialog-container mdc-dialog--open"
+                id="mat-mdc-dialog-1" role="dialog" aria-modal="true" aria-labelledby="mat-mdc-dialog-title-1"
+                style="--mat-dialog-transition-duration: 0ms;">
+                <div class="mdc-dialog__container">
+                    <div class="mat-mdc-dialog-surface mdc-dialog__surface">
+                        <div class="ng-star-inserted">
+                            <h5 mat-dialog-title="" class="mat-mdc-dialog-title mdc-dialog__title mat-subtitle-1"
+                                id="mat-mdc-dialog-title-1">Delete row</h5>
+                            <div mat-dialog-content=""
+                                class="mat-mdc-dialog-content mdc-dialog__content mat-subtitle-2 lh-16"> Would you like
+                                to confirm delete?
+                            </div>
+                            <div mat-dialog-actions="" class="mat-mdc-dialog-actions mdc-dialog__actions p-24 p-t-0">
+                                <button mat-button-ripple-uninitialized="" mat-stroked-button="" color="warn"
+                                    mat-dialog-close (click)="onNoClick()"
+                                    class="mdc-button mdc-button--outlined mat-mdc-outlined-button mat-warn mat-mdc-button-base"
+                                    mat-button-is-fab="false" type="button"><span
+                                        class="mdc-button__label">No</span></button>
+
+                                <button mat-flat-button="" color="primary" cdkfocusinitial=""
+                                    class="mdc-button mdc-button--unelevated mat-mdc-unelevated-button mat-primary mat-mdc-button-base"
+                                    mat-button-is-fab="false" type="button" (click)="onYesClick()"><span
+                                        class="mdc-button__label"> Yes </span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div tabindex="0" class="cdk-visually-hidden cdk-focus-trap-anchor" aria-hidden="true"></div>
+        </div>
+    </div>
+</div>

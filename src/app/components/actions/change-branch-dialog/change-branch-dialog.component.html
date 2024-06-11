@@ -1,0 +1,68 @@
+<div class="p-5">
+    <div class="cdk-global-overlay-wrapper w-100 h-100" dir="ltr" style="justify-content: center; align-items: center;">
+        <div id="cdk-overlay-5" class="cdk-overlay-pane w-100 h-100" style=" position: static;">
+            <div tabindex="-1" class="mat-mdc-dialog-container mdc-dialog cdk-dialog-container mdc-dialog--open"
+                id="mat-mdc-dialog-1" role="dialog" aria-modal="true" aria-labelledby="mat-mdc-dialog-title-1"
+                style="--mat-dialog-transition-duration: 0ms;">
+                <div class="mdc-dialog__container">
+                    <div class="mat-mdc-dialog-surface mdc-dialog__surface">
+                        <div class="ng-star-inserted">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 mat-dialog-title=""
+                                    class="mat-mdc-dialog-title mdc-dialog__title mat-subtitle-1 ps-3">
+                                    Update Subscription Header Info</h5>
+                                <mat-icon class="text-secondary close-modal-button me-3 pointer" (click)="closeModal()"
+                                    matSuffix>
+                                    close</mat-icon>
+                            </div>
+                            <div class="px-5 py-3">
+                                <form [formGroup]="editForm" (ngSubmit)="onSubmit(editForm)">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <mat-form-field appearance="outline">
+                                                <mat-label>Delivery Branch</mat-label>
+                                                <mat-select formControlName="branchID"
+                                                    (selectionChange)="onBranchChange($event)">
+                                                    <input type="text" autocomplete="off" matInput appSelectSearch
+                                                        [searchList]="branchDriver()?.data || []"
+                                                        [filterKeys]="['branchName']" class="px-3 py-4 mat-filter-menu"
+                                                        style="font-size: 16px;font-weight: 400;"
+                                                        placeholder="Search..." />
+                                                    <mat-option *ngFor="let item of branchDriver()?.data"
+                                                        [value]="item.branchID">
+                                                        {{item.branchName}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <mat-form-field appearance="outline">
+                                                <mat-label>Driver</mat-label>
+                                                <mat-select formControlName="driverID">
+                                                    <input type="text" autocomplete="off" matInput appSelectSearch
+                                                        [searchList]="drivers" [filterKeys]="['driverName']"
+                                                        class="px-3 py-4 mat-filter-menu"
+                                                        style="font-size: 16px;font-weight: 400;"
+                                                        placeholder="Search..." />
+                                                    <mat-option *ngFor="let item of drivers" [value]="item.driverID">
+                                                        {{item.driverName}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        class="mat-mdc-dialog-actions mdc-dialog__actions p-24 p-t-0 justify-content-end">
+                                        <button mat-raised-button color="success"
+                                            [disabled]="editForm.invalid">Update</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

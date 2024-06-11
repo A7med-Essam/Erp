@@ -1,0 +1,141 @@
+<mat-sidenav-container class="sidenav-container">
+
+  <!-- Sidebar -->
+  <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+
+    <div class="p-16">
+      <div class="mb-16">
+        <a href="javascript:void(0)" class="d-flex align-items-center">
+          <img src="assets/images/favicon.png" alt=""> <span class="ms-16 fw-medium fs-26">Low Calories</span>
+        </a>
+
+      </div>
+
+      <div class="pt-8">
+        <ul>
+          <ng-container *ngFor="let sidenav of sidebarMenu">
+            <div *ngIf="sidenav.menu == 'Users' && sidenav.permission" class="mdc-list-group__subheader">Auth</div>
+            <div *ngIf="sidenav.menu == 'Governorate' && sidenav.permission" class="mdc-list-group__subheader">Locations
+            </div>
+            <li class="list-group mb-8" *ngIf="sidenav.permission">
+              <a matRipple [matRippleColor]="'#f7f8f443'" routerLink="{{ sidenav.link }}" style="font-size: 14px;"
+                class="sidebar-menu fs-16 w-100 d-flex align-items-center" routerLinkActive="activelink">
+                <i-feather name="{{ sidenav.icon }}" class="feather-base me-16"></i-feather> <span class="ps-4">{{
+                  sidenav.menu }}</span>
+              </a>
+            </li>
+          </ng-container>
+        </ul>
+      </div>
+
+    </div>
+
+  </mat-sidenav>
+
+  <mat-sidenav-content [ngClass]="{'mat-sidenav-content': isSidebarOpened}">
+
+    <!-- Header -->
+    <mat-toolbar class="header ps-24 pe-24">
+      <button type="button" class="ms-4" aria-label="Toggle sidenav" mat-icon-button (click)="toggleSidebar(drawer)">
+        <i-feather name="menu" class="text-light-muted feather-base mt-n3" style="display: contents;"></i-feather>
+      </button>
+      <div class="ms-auto">
+        <button mat-button class="fs-16 pt-4 pb-4 ps-8 pe-8 text-light-muted d-flex align-items-center"
+          [matMenuTriggerFor]="menu">
+          <div class="d-flex align-items-center">
+            <img src="assets/images/user2.webp" class="rounded-circle" alt="">
+            <span class="fw-light ms-8 text-secondary">Hi,</span>
+
+            <p class="welcome--txt text-center mt-3">
+              <span class="fw-bold ms-8">
+                {{loginForm.get('email')?.value}}
+              </span>
+            </p>
+
+            <i-feather name="chevron-down" class="feather-base"></i-feather>
+          </div>
+        </button>
+        <mat-menu #menu="matMenu" class="profile-dropdown">
+          <div class="p-16 mb-4">
+            <button mat-menu-item class="fs-16" routerLink="/profile" fragment="1">Account</button>
+            <button mat-menu-item class="fs-16" routerLink="/profile" fragment="2">My Settings</button>
+            <button mat-menu-item class="fs-16" routerLink="/profile" fragment="3">Change Password</button>
+          </div>
+
+          <hr>
+
+          <div class="p-16">
+            <button mat-flat-button color="accent" class="w-100 text-white" (click)="logout()">Logout</button>
+          </div>
+
+        </mat-menu>
+      </div>
+    </mat-toolbar>
+
+    <!-- Content -->
+    <div class="body-wrapper">
+      <div class="page-wrapper">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+
+    <p class="text-center pb-24 fs-16">© {{currentYear}} All rights reserved by <a href="" target="_blank"
+        class="text-indigo">Low
+        Calories</a></p>
+
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
+
+
+<div *ngIf="displayLockScreen$ | async">
+  <div class="blank-layout-container justify-content-center lockScreen">
+    <div class="position-relative row w-100 h-100">
+      <div class="col-12">
+        <div class="p-32 d-flex align-items-start align-items-lg-center justify-content-center h-100">
+          <div class="row justify-content-center w-100">
+            <div class="col-lg-9 max-width-form bg-white p-5 rounded">
+              <h4 class="f-w-700 f-s-24 m-0">Your session has expired</h4><span
+                class="d-block f-w-500 d-block m-t-10 text-muted">Please enter your password to continue using the app.
+              </span>
+              <div class="mt-2 text-right">
+                <a class="text-decoration-none text-accent f-w-500 f-s-14 pointer" (click)="goToLogin()">Go to
+                  Login?</a>
+              </div>
+              <form class="mt-1" [formGroup]='loginForm' (ngSubmit)='login(loginForm)'>
+
+                <figure class="m-auto mb-4">
+                  <img alt="avatar" src="assets/images/user2.webp" />
+                </figure>
+                <p class="welcome--txt text-center mt-3">
+                  {{loginForm.get('email')?.value}}
+                </p>
+
+                <mat-form-field class="w-100 fs-16" appearance="outline">
+                  <mat-label>Password</mat-label>
+                  <input matInput type="password" placeholder="Enter your password" formControlName="password"
+                    [class.is-invalid]="loginForm.get('password')?.errors != null && loginForm.get('password')?.touched">
+                </mat-form-field>
+
+                <button mat-button-ripple-uninitialized="" mat-flat-button="" color="primary"
+                  class="w-100 mdc-button mdc-button--unelevated mat-mdc-unelevated-button mat-primary mat-mdc-button-base"
+                  mat-button-is-fab="false" [disabled]="loginForm.invalid">
+                  <span class="mat-mdc-button-persistent-ripple mdc-button__ripple"></span>
+                  <span class="mdc-button__label">Sign In</span>
+                  <span class="mat-mdc-focus-indicator"></span>
+                  <span class="mat-mdc-button-touch-target"></span>
+                  <ng-container *ngIf="login$ | async as login">
+                    <ng-container *ngIf="login.loading">
+                      <i class="fa-solid fa-circle-notch fa-spin mx-2"></i>
+                    </ng-container>
+                  </ng-container>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

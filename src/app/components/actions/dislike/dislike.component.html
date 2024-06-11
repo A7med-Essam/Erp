@@ -1,0 +1,44 @@
+<div class="px-5">
+    <h6 mat-dialog-title class="px-0">
+        Action Form <span class="text-primary">(DISLIKE)</span>
+    </h6>
+    <form class="mt-3" [formGroup]="dialogForm" (ngSubmit)="onSubmit(dialogForm)">
+        <mat-form-field appearance="outline">
+            <mat-label>Select Meals Types</mat-label>
+            <mat-select formControlName="mealType">
+                <mat-option *ngFor="let item of mealTypes()?.data" [value]="item.mealTypeID">
+                    {{item.mealTypeName }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Customer Meal</mat-label>
+            <mat-select formControlName="Mealid">
+                <input type="text" autocomplete="off" matInput appSelectSearch [searchList]="customerMeals || []"
+                    [filterKeys]="['mealName']" class="px-3 py-4 mat-filter-menu"
+                    style="font-size: 16px;font-weight: 400;" placeholder="Search..." />
+                <mat-option *ngFor="let item of customerMeals" [value]="item?.mealID">
+                    {{item?.mealName}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Select Opposite Meal</mat-label>
+            <input matInput placeholder="Select Item" formControlName="OppsitMealName" (click)="openMealDialog()"
+                [readonly]="true" required>
+            <mat-icon *ngIf="!dialogForm.value.OppsitMealID" (click)="openMealDialog()" class="text-secondary pointer"
+                matSuffix>apps</mat-icon>
+            <mat-icon *ngIf="dialogForm.value.OppsitMealID" class="text-success pointer" matSuffix>
+                verified_user</mat-icon>
+        </mat-form-field>
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Notes</mat-label>
+            <textarea matInput rows="3" placeholder="Write your notes" value="Default Value"
+                formControlName="Notes"></textarea>
+        </mat-form-field>
+        <mat-dialog-actions align="end">
+            <button type="button" mat-button mat-dialog-close>Cancel</button>
+            <button type="submit" mat-raised-button [disabled]="dialogForm.invalid" color="success">Submit</button>
+        </mat-dialog-actions>
+    </form>
+</div>

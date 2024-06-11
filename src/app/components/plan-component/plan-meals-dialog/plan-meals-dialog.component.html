@@ -1,0 +1,54 @@
+<mat-card class="w-100">
+    <mat-card-content>
+        <h4 class="mb-3">Selection Meals Modal</h4>
+        <!-- <div class="d-flex justify-content-between align-items-center">
+            <h4 mat-dialog-title="" class="mat-mdc-dialog-title mdc-dialog__title mat-subtitle-1 ps-3">
+                Selection Meals Modal
+            </h4>
+            <mat-icon class="text-secondary close-modal-button me-3 pointer" (click)="closeModal()" matSuffix>
+                close</mat-icon>
+        </div> -->
+        <div class="row" *ngIf="selectedCategory != 0">
+            <div class="col-12">
+                <mat-form-field class="mx-1" appearance="outline">
+                    <mat-label>Search By Meal Name</mat-label>
+                    <input matInput (keyup.enter)="filter(MealInput)" (blur)="filter(MealInput)"
+                        placeholder="Enter Meal Name..." #MealInput>
+                </mat-form-field>
+            </div>
+        </div>
+        <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Select Category</mat-label>
+            <mat-select [(ngModel)]="selectedCategory" (selectionChange)="onCategoryChange($event)">
+                <mat-option *ngFor="let item of categories" [value]="item.id">
+                    {{item.label}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </mat-card-content>
+</mat-card>
+<div class="row mx-0">
+    <div class="col-lg-8">
+        <mat-card class="w-100 m-0" *ngIf="tableFlag">
+            <mat-card-content *ngIf="TABLE_DATA()?.data?.length">
+                <generic-table [TABLE_DATA]="{data:selectedPlan}" [columns]="planColumns" [actions]="actions"
+                    (delete)="deleteRow($event)">
+                </generic-table>
+                <mat-dialog-actions align="end">
+                    <!-- <button color="success" type="button" mat-button mat-dialog-close>Confirm</button> -->
+                    <button mat-raised-button (click)="close()" color="success">Confirm</button>
+                </mat-dialog-actions>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="col-lg-4">
+        <mat-card class="w-100 m-0">
+            <mat-card-content *ngIf="TABLE_DATA()?.data?.length">
+                <generic-table [TABLE_DATA]="TABLE_DATA()" [columns]="columns"
+                    [pageSizeOptions]="[10, 25, 50, 100, 500]" (clicked)="clickedRow($event)"
+                    (PaginateOptions)="Paginate($event)">
+                </generic-table>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

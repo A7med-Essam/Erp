@@ -1,0 +1,502 @@
+<mat-card class="mat-mdc-card mdc-card cardWithShadow">
+    <div class="flex-between my-3 mx-4">
+        <mat-card-title class="mat-mdc-card-title">Invoice Details</mat-card-title>
+        <mat-icon class="text-secondary close-modal-button pointer m-0" (click)="closeModal()"
+            matSuffix>close</mat-icon>
+    </div>
+</mat-card>
+<div class="row m-0">
+    <div class="col-lg-6">
+        <mat-card class="mat-mdc-card mdc-card cardWithShadow">
+            <mat-card-content class="mat-mdc-card-content p-b-30 p-t-24 m-b-20">
+                <mat-card-title class="mat-mdc-card-title">Subscription Details</mat-card-title>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="bookmark" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Invoice Number</h6>
+                                    <span class="mat-body-1">{{invoice?.invoiceNO? invoice?.invoiceNO : 'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="bookmark" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Program</h6>
+                                    <span class="mat-body-1">{{invoice?.program? invoice?.program : 'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="bookmark" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Plan</h6>
+                                    <span class="mat-body-1">{{invoice?.planTiltle? invoice?.planTiltle : 'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="bookmark" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Meal Types</h6>
+                                    <span class="mat-body-1">{{invoice?.mealTypes?
+                                        invoice?.mealTypes?.split("|")?.join(" | ") : 'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="bookmark" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Dislike Meals</h6>
+                                    <span class="mat-body-1">{{invoice?.dislikeMeals ? invoice?.dislikeMeals :
+                                        'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="bookmark" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Payment Type</h6>
+                                    <span class="mat-body-1">{{invoice?.paymentType? invoice?.paymentType :
+                                        'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="bookmark" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Agent</h6>
+                                    <span class="mat-body-1">{{invoice?.agent? invoice?.agent : 'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="bookmark" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Create Branch Agent</h6>
+                                    <span class="mat-body-1">{{invoice?.createBranchAgent? invoice?.createBranchAgent :
+                                        'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="bookmark" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Head Country</h6>
+                                    <span class="mat-body-1">{{invoice?.headCountry? invoice?.headCountry :
+                                        'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="bookmark" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Invoice Notes</h6>
+                                    <span class="mat-body-1">{{invoice?.notes? invoice?.notes : 'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="col-lg-6">
+        <mat-card class="mat-mdc-card mdc-card cardWithShadow">
+            <mat-card-content class="mat-mdc-card-content p-b-30 p-t-24 m-b-20">
+                <mat-card-title class="mat-mdc-card-title">Personal Details</mat-card-title>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="user" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Full Name</h6>
+                                    <span class="mat-body-1">{{invoice?.firstName}} {{invoice?.lastName}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="user" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">First Name</h6>
+                                    <span class="mat-body-1">{{invoice?.firstName ? invoice?.firstName : 'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="user" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Last Name</h6>
+                                    <span class="mat-body-1">{{invoice?.lastName ? invoice?.lastName : 'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="user" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Gender</h6>
+                                    <span class="mat-body-1">{{invoice?.gender? invoice?.gender : 'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="user" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Height</h6>
+                                    <span class="mat-body-1">{{invoice?.height? invoice?.height : 'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="user" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Weight</h6>
+                                    <span class="mat-body-1">{{invoice?.weight? invoice?.weight : 'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="user" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Birth Date</h6>
+                                    <span class="mat-body-1">{{invoice?.birthDate? invoice?.birthDate : 'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="user" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Email</h6>
+                                    <span class="mat-body-1">{{invoice?.email? invoice?.email : 'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="user" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Mobile Number</h6>
+                                    <span class="mat-body-1">{{invoice?.mobileNumber? invoice?.mobileNumber :
+                                        'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="user" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Second Mobile Number</h6>
+                                    <span class="mat-body-1">{{invoice?.secondMobileNumber? invoice?.secondMobileNumber
+                                        : 'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="col-lg-6">
+        <mat-card class="mat-mdc-card mdc-card cardWithShadow">
+            <mat-card-content class="mat-mdc-card-content p-b-30 p-t-24 m-b-20">
+                <mat-card-title class="mat-mdc-card-title">Delivery Details</mat-card-title>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="truck" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Start Date</h6>
+                                    <span class="mat-body-1">{{invoice?.startDate ? invoice?.startDate : 'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="truck" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Delivery Days</h6>
+                                    <span class="mat-body-1">{{invoice?.deliveryDays ? invoice?.deliveryDays :
+                                        'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="truck" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Emirate</h6>
+                                    <span class="mat-body-1">{{invoice?.emirate ? invoice?.emirate : 'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="truck" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Area</h6>
+                                    <span class="mat-body-1">{{invoice?.area ? invoice?.area : 'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="truck" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Land Mark</h6>
+                                    <span class="mat-body-1">{{invoice?.landMark ? invoice?.landMark : 'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="truck" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Vila Flat</h6>
+                                    <span class="mat-body-1">{{invoice?.vilaFlat ? invoice?.vilaFlat : 'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="col-lg-6">
+        <mat-card class="mat-mdc-card mdc-card cardWithShadow">
+            <mat-card-content class="mat-mdc-card-content p-b-30 p-t-24 m-b-20">
+                <mat-card-title class="mat-mdc-card-title">Payment Details</mat-card-title>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="dollar-sign" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Total</h6>
+                                    <span class="mat-body-1">{{invoice?.total ? invoice?.total : 'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="dollar-sign" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Discount</h6>
+                                    <span class="mat-body-1">{{invoice?.discount ? invoice?.discount : 'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="dollar-sign" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Net Total</h6>
+                                    <span class="mat-body-1">{{invoice?.netTotal ? invoice?.netTotal : 'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="dollar-sign" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">VAT</h6>
+                                    <span class="mat-body-1">{{invoice?.vat ? invoice?.vat : 'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="dollar-sign" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Net Total with VAT</h6>
+                                    <span class="mat-body-1">{{invoice?.netTotalWithVat ? invoice?.netTotalWithVat :
+                                        'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="m-t-32 ng-star-inserted">
+                            <div class="d-flex align-items-center">
+                                <span
+                                    class="align-items-center bg-primary d-flex icon-40 justify-content-center rounded-circle text-primary">
+                                    <i-feather name="dollar-sign" class="feather-base text-white"></i-feather>
+                                </span>
+                                <div class="m-l-16 m-r-auto">
+                                    <h6 class="mat-subtitle-1 f-s-16 f-w-600">Grand Total</h6>
+                                    <span class="mat-body-1">{{invoice?.granTotal ? invoice?.granTotal : 'N/A'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

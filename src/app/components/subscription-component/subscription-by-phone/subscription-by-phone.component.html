@@ -1,0 +1,18 @@
+<mat-card class="w-100">
+    <mat-card-content>
+        <generic-table *ngIf="TABLE_DATA()?.data" [TABLE_DATA]="TABLE_DATA()" [columns]="columns"
+            [pageSizeOptions]="[10, 25, 50, 100, 500]" [actions]="actions" (details)="showDetails($event)"
+            [components]="{filter: true,columns: true,export: Permissions.Subscriptions.Export,selection: true, index:true}">
+        </generic-table>
+
+        <div *ngIf="TABLE_DATA()?.messages?.length && Phone"
+            class="alert alert-warning alert-text-warning d-flex fs-14 align-items-start rounded mb-16" role="alert">
+            <i-feather name="alert-triangle" class="text-warning feather-base me-12"></i-feather>
+            <div>
+                <p class="mb-8 fw-medium fs-16">Warning</p>
+                <span *ngFor="let msg of TABLE_DATA()?.messages" class="">{{msg}} — <span
+                        class="fw-medium">{{Phone}}</span></span>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

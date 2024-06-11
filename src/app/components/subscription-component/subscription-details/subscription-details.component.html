@@ -1,0 +1,16 @@
+<generic-table *ngIf="TABLE_DATA()?.data && TABLE_DATA()?.data?.subscriptionDetails?.length"
+    [TABLE_DATA]="{data:combinedMealDeliveryArray}" [columns]="columns"
+    [components]="{filter: true,columns: true,export: Permissions.Subscriptions.Export,selection: true, index:true}"
+    [pageSizeOptions]="[10, 25, 50, 100, 500]" [actions]="actions" (selected)="getSelectedRows($event)"
+    (update)="updateRow($event)" (DeliveryDetails)="updateDeliveryDetails($event)" (rowStatus)="ChangeStatus($event)"
+    (deliveryNote)="updateDeliveryNotes($event)">
+</generic-table>
+
+<div *ngIf="TABLE_DATA()?.data && !TABLE_DATA()?.data?.subscriptionDetails?.length"
+    class="alert alert-warning alert-text-warning d-flex fs-14 align-items-start rounded mb-16" role="alert">
+    <i-feather name="alert-triangle" class="text-warning feather-base me-12"></i-feather>
+    <div>
+        <p class="mb-8 fw-medium fs-16">Warning</p>
+        <span class="">There's no subscription details</span>
+    </div>
+</div>

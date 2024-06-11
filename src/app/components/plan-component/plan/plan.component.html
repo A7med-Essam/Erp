@@ -1,0 +1,16 @@
+<div class="my-4">
+    <mat-card class="w-100">
+        <mat-card-content>
+            <div class="flex-between mb-56">
+                <h4>Plans Table</h4>
+                <button mat-raised-button class="me-8 mb-8" [routerLink]="['/plans/create']"
+                    routerLinkActive="router-link-active" [disabled]="!Permissions.Plan.Create" color="success">Add New
+                    Plan</button>
+            </div>
+            <generic-table [TABLE_DATA]="TABLE_DATA()" [columns]="columns" [actions]="actions"
+                [components]="{filter: true,columns: true,export: true, index:true}" (update)="updateRow($event)"
+                (delete)="deleteRow($event)">
+            </generic-table>
+        </mat-card-content>
+    </mat-card>
+</div>

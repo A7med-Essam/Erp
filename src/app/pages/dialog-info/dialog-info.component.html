@@ -1,0 +1,26 @@
+<div *ngIf="DATA_TYPE == 'mealNote'">
+    <h6 mat-dialog-title>
+        {{DATA_INFO?.meals[0].dayName}}
+        <br>
+        {{DATA_INFO?.deliveryDate | date :'dd/MM/yyyy'}}
+    </h6>
+    <div *ngIf="HasNote(DATA_INFO?.meals); else noNote">
+        <ng-container *ngFor="let item of DATA_INFO?.meals">
+            <mat-dialog-content class="mat-typography" *ngIf="item.mealNote">
+                <h5 class="text-primary">{{item.mealName}}</h5>
+                <p class="d-flex align-items-center">
+                    <mat-icon fontIcon="info" class="me-2"></mat-icon>
+                    {{item.mealNote}}
+                </p>
+            </mat-dialog-content>
+        </ng-container>
+    </div>
+    <ng-template #noNote>
+        <h6 class="text-danger px-4">
+            there's no meal notes in this day
+        </h6>
+    </ng-template>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancel</button>
+    </mat-dialog-actions>
+</div>

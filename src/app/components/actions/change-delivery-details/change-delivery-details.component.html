@@ -1,0 +1,54 @@
+<div class="px-5">
+    <h6 mat-dialog-title class="px-0">
+        Action Form <span class="text-primary">(CHANGE DELIVERY DETAILS)</span>
+    </h6>
+    <form class="mt-3" [formGroup]="dialogForm" (ngSubmit)="onSubmit(dialogForm)">
+        <mat-form-field appearance="outline">
+            <mat-label>Delivery Branch</mat-label>
+            <mat-select formControlName="BranchID" (selectionChange)="onBranchChange($event)">
+                <input type="text" autocomplete="off" matInput appSelectSearch
+                    [searchList]="branchDriver()?.data || []" [filterKeys]="['branchName']"
+                    class="px-3 py-4 mat-filter-menu" style="font-size: 16px;font-weight: 400;"
+                    placeholder="Search..." />
+                <mat-option *ngFor="let item of branchDriver()?.data" [value]="item.branchID">
+                    {{item.branchName}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Driver</mat-label>
+            <mat-select formControlName="DriverID">
+                <input type="text" autocomplete="off" matInput appSelectSearch [searchList]="drivers"
+                    [filterKeys]="['driverName']" class="px-3 py-4 mat-filter-menu"
+                    style="font-size: 16px;font-weight: 400;" placeholder="Search..." />
+                <mat-option *ngFor="let item of drivers" [value]="item.driverID">
+                    {{item.driverName}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Address</mat-label>
+            <mat-select formControlName="AdressID" (selectionChange)="onAddressChange($event)">
+                <input type="text" autocomplete="off" matInput appSelectSearch
+                    [searchList]="customerAddresses()?.data || []" [filterKeys]="['areaName','branchName','adress']"
+                    class="px-3 py-4 mat-filter-menu" style="font-size: 16px;font-weight: 400;"
+                    placeholder="Search..." />
+                <mat-option *ngFor="let item of customerAddresses()?.data" [value]="item.id">
+                    <ng-container *ngIf="findAreaById(item.areaId) as area">
+                        {{ area.areaName }} - {{ area.branchName }} - {{ item.adress }}
+                    </ng-container>
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Notes</mat-label>
+            <textarea matInput rows="3" placeholder="Write your notes" value="Default Value"
+                formControlName="Notes"></textarea>
+        </mat-form-field>
+
+        <mat-dialog-actions align="end">
+            <button type="button" mat-button mat-dialog-close>Cancel</button>
+            <button type="submit" mat-raised-button [disabled]="dialogForm.invalid" color="success">Submit</button>
+        </mat-dialog-actions>
+    </form>
+</div>

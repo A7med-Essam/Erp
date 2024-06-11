@@ -1,0 +1,321 @@
+<div class="px-3">
+    <h6 mat-dialog-title class="px-0">
+        Action Form <span class="text-primary">(RENEW)</span>
+    </h6>
+    <mat-stepper [linear]="true" #stepper labelPosition="bottom" (selectionChange)="onStepperChange($event)">
+        <mat-step [stepControl]="planForm">
+            <ng-template matStepLabel>Plan</ng-template>
+            <form class="mt-3" [formGroup]="planForm">
+                <div class="row mx-0">
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Start Date</mat-label>
+                            <input (click)="picker.open()" matInput [matDatepicker]="picker" formControlName="startdate"
+                                [min]="planForm.value.startdate">
+                            <mat-datepicker-toggle matIconSuffix [for]="picker">
+                            </mat-datepicker-toggle>
+                            <mat-datepicker touchUi #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Select Meals Types</mat-label>
+                            <mat-select multiple formControlName="mealsType">
+                                <input type="text" autocomplete="off" matInput appSelectSearch
+                                    [searchList]="mealTypes()?.data || []" [filterKeys]="['mealTypeName']"
+                                    class="px-3 py-4 mat-filter-menu" style="font-size: 16px;font-weight: 400;"
+                                    placeholder="Search..." />
+                                <mat-option *ngFor="let item of mealTypes()?.data" [value]="item">
+                                    {{item.mealTypeName }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Duration</mat-label>
+                            <input matInput placeholder="Enter Plan Duration" formControlName="duration" required
+                                maxlength="4" [matAutocomplete]="auto"
+                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+                            <mat-autocomplete #auto="matAutocomplete">
+                                <mat-option *ngFor="let item of PLAN_DAY_DATA()?.data"
+                                    [value]="item.dayCount">{{item.dayCount}}</mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Select Delivery Days</mat-label>
+                            <mat-select multiple formControlName="deliveryDays">
+                                <input type="text" autocomplete="off" matInput appSelectSearch
+                                    [searchList]="deliveryDays()?.data || []" [filterKeys]="['day_name']"
+                                    class="px-3 py-4 mat-filter-menu" style="font-size: 16px;font-weight: 400;"
+                                    placeholder="Search..." />
+                                <mat-option *ngFor="let item of deliveryDays()?.data" [value]="item"
+                                    [disabled]="!item.show">
+                                    {{item.day_name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Subscribe From?</mat-label>
+                            <mat-select formControlName="subscriptionType"
+                                (selectionChange)="onSubscribeFromChange($event)">
+                                <mat-option *ngFor="let item of subscribeOptions" [value]="item">{{
+                                    getSubscribeOptionsEnumKey(item) }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-6" *ngIf="isSubscribeFromBranch">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Select Branch</mat-label>
+                            <mat-select formControlName="subscripBranch">
+                                <mat-option *ngFor="let item of branches()?.data" [value]="item.branchID">{{
+                                    item.branchName
+                                    }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-12">
+                        <mat-slide-toggle class="mx-3 mb-2" formControlName="sponsor">
+                            Sponsor?</mat-slide-toggle>
+                    </div>
+                </div>
+            </form>
+            <mat-dialog-actions align="end">
+                <button type="button" mat-button mat-dialog-close>Cancel</button>
+                <button type="submit" mat-raised-button *ngIf="!planForm.value.sponsor" [disabled]="planForm.invalid"
+                    (click)="next(planForm)" color="success">Next</button>
+                <button type="submit" mat-raised-button *ngIf="planForm.value.sponsor" [disabled]="planForm.invalid"
+                    (click)="Renew(planForm)" color="success">Submit</button>
+            </mat-dialog-actions>
+        </mat-step>
+        <mat-step [stepControl]="paymentForm" *ngIf="!planForm.value.sponsor">
+            <ng-template matStepLabel>Payment</ng-template>
+            <form class="mt-3" [formGroup]="paymentForm" (ngSubmit)="Renew(paymentForm)">
+                <div formGroupName="invoice">
+                    <mat-card class="w-100">
+                        <mat-card-content>
+                            <div class="row mx-0">
+                                <div class="col-12">
+                                    <div *ngFor="let err of discountErrorList" class="text-danger">
+                                        <small>{{err}}</small>
+                                    </div>
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Discount</mat-label>
+                                        <input matInput placeholder="20%" #DiscountInput
+                                            (keydown.enter)="onApplyDiscount(DiscountInput)">
+                                        <button mat-mini-fab matSuffix class="me-3" color="custom" type="button"
+                                            (click)="onApplyDiscount(DiscountInput)">
+                                            <mat-icon>card_giftcard</mat-icon>
+                                        </button>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-12" *ngIf="paymentForm.value.invoice?.paymentDiscounts?.length">
+                                    <table class="table table-bordered table-responsive table-light">
+                                        <thead>
+                                            <tr>
+                                                <th class="p-3 text-center">Code</th>
+                                                <th class="p-3 text-center">Value</th>
+                                                <th class="p-3 text-center">Delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr
+                                                *ngFor="let item of paymentForm.value.invoice?.paymentDiscounts; let i = index">
+                                                <td class="p-3 text-center" style="vertical-align: middle;">
+                                                    {{item.couponCode}}
+                                                </td>
+                                                <td class="p-3 text-center" style="vertical-align: middle;">
+                                                    {{item.discountValue}}
+                                                </td>
+                                                <td class="p-3 text-center" style="vertical-align: middle;">
+                                                    <button mat-mini-fab matSuffix class="me-3 text-danger"
+                                                        color="custom" type="button" (click)="removeDiscount(i)">
+                                                        <mat-icon>close</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Payment Methods</mat-label>
+                                <mat-select formControlName="paymentMethods" multiple
+                                    (selectionChange)="onPaymentMethodsChange($event)">
+                                    <mat-option *ngFor="let item of PAYMENT_TYPE_DATA()?.data" [value]="item">{{
+                                        item.paymentName }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <table class="table table-bordered table-responsive table-custom"
+                                *ngIf="paymentForm.value.invoice?.paymentMethods && paymentForm.value.invoice?.payments?.length">
+                                <thead>
+                                    <tr>
+                                        <th class="p-3 text-center">Payment Type</th>
+                                        <th class="p-3 text-center">Amount</th>
+                                        <th class="p-3 text-center">Reference Id</th>
+                                    </tr>
+                                </thead>
+                                <tbody formArrayName="payments">
+                                    <tr *ngFor="let payment of payments.controls; let i = index;" [formGroupName]="i">
+                                        <td class="p-0 text-center" style="vertical-align: middle;">
+                                            {{payment.get("methodName")?.value}}
+                                        </td>
+                                        <td class="p-0">
+                                            <mat-form-field>
+                                                <mat-label>Enter Paid Amount</mat-label>
+                                                <input matInput placeholder="$" required maxlength="9"
+                                                    formControlName="amount"
+                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+                                            </mat-form-field>
+                                        </td>
+                                        <td class="p-0">
+                                            <mat-form-field>
+                                                <mat-label>Enter Transaction Reference Id</mat-label>
+                                                <input matInput placeholder="#" required formControlName="refrenceId">
+                                            </mat-form-field>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </mat-card-content>
+                    </mat-card>
+                    <mat-divider></mat-divider>
+                    <mat-card class="w-100">
+                        <mat-card-content>
+                            <div class="row m-0">
+                                <div class="col-lg-6">
+                                    <mat-form-field>
+                                        <mat-label>Total</mat-label>
+                                        <input matInput formControlName="total"
+                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+                                    </mat-form-field>
+                                    <mat-form-field>
+                                        <mat-label>Manual Discount</mat-label>
+                                        <input matInput formControlName="manualDiscount"
+                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+                                    </mat-form-field>
+                                    <mat-form-field>
+                                        <mat-label>Bag Value</mat-label>
+                                        <div class="d-flex flex-between">
+                                            <input matInput formControlName="bageValue"
+                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+                                            <mat-slide-toggle class="mx-3 mb-2" formControlName="bagCount">
+                                                Bag?</mat-slide-toggle>
+                                        </div>
+                                    </mat-form-field>
+                                    <mat-form-field class="w-100 fs-16" appearance="outline">
+                                        <mat-label>Notes</mat-label>
+                                        <textarea matInput rows="2" placeholder="Add your notes"
+                                            formControlName="notes"></textarea>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-lg-6">
+                                    <table class="table table-responsive table-light">
+                                        <thead>
+                                            <tr>
+                                                <th class="p-3 text-center">Description</th>
+                                                <th class="p-3 text-center">Value</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="p-3 text-center" style="vertical-align: middle;">
+                                                    Total
+                                                </td>
+                                                <td class="p-3 text-center" style="vertical-align: middle;">
+                                                    {{(paymentForm.value.invoice?.total||0) | round}}
+                                                </td>
+                                            </tr>
+                                            <tr
+                                                *ngIf="paymentForm.value.invoice?.TaxDicountOption == TaxDicountOption[1]">
+                                                <td class="p-3 text-center" style="vertical-align: middle;">
+                                                    Tax {{(paymentForm.value.invoice?.tax || 0) | percentage}}
+                                                </td>
+                                                <td class="p-3 text-center" style="vertical-align: middle;">
+                                                    <span class="text-warning">
+                                                        +({{(paymentForm.value.invoice?.taxAmount || 0) | round}})
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-3 text-center" style="vertical-align: middle;">
+                                                    Discount
+                                                </td>
+                                                <td class="p-3 text-center text-danger" style="vertical-align: middle;">
+                                                    -{{(paymentForm.value.invoice?.discount||0) | round}}
+                                                </td>
+                                            </tr>
+                                            <tr
+                                                *ngIf="paymentForm.value.invoice?.TaxDicountOption == TaxDicountOption[0]">
+                                                <td class="p-3 text-center" style="vertical-align: middle;">
+                                                    Tax {{(paymentForm.value.invoice?.tax || 0) | percentage}}
+                                                </td>
+                                                <td class="p-3 text-center" style="vertical-align: middle;">
+                                                    <span class="text-warning">
+                                                        +({{(paymentForm.value.invoice?.taxAmount || 0) | round}})
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-3 text-center" style="vertical-align: middle;">
+                                                    Bag
+                                                </td>
+                                                <td class="p-3 text-center" style="vertical-align: middle;">
+                                                    {{paymentForm.value.invoice?.bageValue || 0}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-3 text-center" style="vertical-align: middle;">
+                                                    Net
+                                                </td>
+                                                <td class="p-3 text-center text-success fw-bold"
+                                                    style="vertical-align: middle;">
+                                                    {{(paymentForm.value.invoice?.net || 0) | round | currentCurrency}}
+                                                </td>
+                                            </tr>
+                                            <tr *ngIf="files">
+                                                <td class="p-3 text-center" style="vertical-align: middle;">
+                                                    Attachments
+                                                </td>
+                                                <td class="p-3 text-center fw-bold"
+                                                    style="vertical-align: middle;white-space: break-spaces;font-size: 12px;">
+                                                    {{ files.relativePath }}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-12">
+                                    <div class="center">
+                                        <ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
+                                            accept="image/*"
+                                            dropZoneLabel="Drag & Drop to Upload Image File Here Or ..."
+                                            [showBrowseBtn]="true" [multiple]="false" browseBtnLabel="Choose Image">
+                                        </ngx-file-drop>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+                <mat-dialog-actions align="end">
+                    <button type="button" mat-button mat-dialog-close>Cancel</button>
+                    <button type="submit" mat-raised-button [disabled]="paymentForm.invalid"
+                        color="success">Renew</button>
+                </mat-dialog-actions>
+            </form>
+        </mat-step>
+    </mat-stepper>
+</div>

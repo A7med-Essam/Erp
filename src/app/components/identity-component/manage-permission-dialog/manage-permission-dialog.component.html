@@ -1,0 +1,61 @@
+<div class="p-5">
+    <div class="cdk-global-overlay-wrapper w-100 h-100" dir="ltr" style="justify-content: center; align-items: center;">
+        <div id="cdk-overlay-5" class="cdk-overlay-pane w-100 h-100" style=" position: static;">
+            <div tabindex="-1" class="mat-mdc-dialog-container mdc-dialog cdk-dialog-container mdc-dialog--open"
+                id="mat-mdc-dialog-1" role="dialog" aria-modal="true" aria-labelledby="mat-mdc-dialog-title-1"
+                style="--mat-dialog-transition-duration: 0ms;">
+                <div class="mdc-dialog__container">
+                    <div class="mat-mdc-dialog-surface mdc-dialog__surface">
+                        <div class="ng-star-inserted">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 mat-dialog-title=""
+                                    class="mat-mdc-dialog-title mdc-dialog__title mat-subtitle-1 ps-3">
+                                    Manage Permissions
+                                </h5>
+                                <mat-icon class="text-secondary close-modal-button" (click)="closeModal()" matSuffix>
+                                    close</mat-icon>
+                            </div>
+                            <div mat-dialog-content=""
+                                class="mat-mdc-dialog-content mdc-dialog__content mat-subtitle-2 lh-16 py-0">
+                                Assign Permissions to {{data.name}} role.
+                            </div>
+                            <div class="px-5 py-2">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <mat-list>
+                                            <div mat-subheader>Pages</div>
+                                            <mat-list-item *ngFor="let page of pages; let i = index"
+                                                [ngClass]="{active: i == selectedPageIndex}"
+                                                (click)="selectPage(i,page)">
+                                                <mat-icon matListItemIcon>folder</mat-icon>
+                                                <div matListItemTitle>{{page}}</div>
+                                                <div matListItemLine>{{getPageCount(page)}} /
+                                                    {{getSelectedPermissionPageCount(page)}}
+                                                </div>
+                                            </mat-list-item>
+                                        </mat-list>
+                                    </div>
+                                    <div class="col-9">
+                                        <div class="px-5 py-2">
+                                            <generic-table [TABLE_DATA]="{data:permissions}" [columns]="columns"
+                                                [components]="{selection: true}"
+                                                [currentSelectedRows]="assignedPermissions"
+                                                [currentSelectedProperty]="'claimValue'"
+                                                (selected)="getSelectedRows($event)">
+                                            </generic-table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <mat-dialog-actions align="end">
+                                    <button type="button" mat-button mat-dialog-close>Cancel</button>
+                                    <button type="submit" mat-raised-button color="success"
+                                        (click)="assign()">Assign</button>
+                                </mat-dialog-actions>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

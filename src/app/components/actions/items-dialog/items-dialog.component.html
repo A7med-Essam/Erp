@@ -1,0 +1,15 @@
+<mat-card class="w-100">
+    <mat-card-content>
+        <h4 class="mb-4 pb-3">Meal Items Table</h4>
+        <mat-form-field class="mx-1" appearance="outline">
+            <mat-label>Search By Item Name</mat-label>
+            <input matInput (keyup.enter)="filter(InputName)" (blur)="filter(InputName)" placeholder=" " #InputName>
+        </mat-form-field>
+        <generic-table [TABLE_DATA]="TABLE_DATA()" [columns]="columns" [pageSizeOptions]="[10, 25, 50, 100, 500]"
+            [actions]="[]" (PaginateOptions)="Paginate($event)" (clicked)="clickedRow($event)">
+        </generic-table>
+        <mat-dialog-actions align="end">
+            <button color="warn" type="button" mat-button mat-dialog-close>Cancel</button>
+        </mat-dialog-actions>
+    </mat-card-content>
+</mat-card>

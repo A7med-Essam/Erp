@@ -1,0 +1,42 @@
+<mat-card class="cardWithShadow" *ngIf="sales()?.data?.length;else noData">
+    <mat-card-content>
+        <mat-card-title class="mat-mdc-card-title">Monthly Sales</mat-card-title>
+        <div class="m-t-10">
+            <div class="d-flex align-items-center p-t-10 p-b-10 ng-star-inserted" *ngFor="let item of sales()?.data | slice : 0 : 5">
+                <button class="bg-light-success icon-48 rounded text-accent border-0">
+                    <i-feather name="dollar-sign" class="text-muted"></i-feather>
+                </button>
+                <div class="m-l-15">
+                    <h5 class="mat-subtitle-1 f-s-16 f-w-500 m-t-0 m-b-0">{{item.month.split('/')[0] | uppercase}}</h5>
+                    <h6 class="mat-subtitle-2 f-s-14 m-0">{{item.month.split('/')[1] | uppercase}}</h6>
+                </div>
+                <div class="m-l-auto">
+                    <h6 class="fw-normal m-0 mat-body-2 text-success">{{item.value}}</h6>
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+<ng-template #noData>
+    <mat-card class="cardWithShadow">
+        <mat-card-content>
+            <mat-card-title class="mat-mdc-card-title">Monthly Sales</mat-card-title>
+            <div class="m-t-10">
+                <div class="d-flex align-items-center p-t-10 p-b-10 ng-star-inserted" *ngFor="let item of mockData">
+                    <button class="bg-light-success icon-48 rounded text-accent border-0">
+                        <i-feather name="dollar-sign" class="text-muted"></i-feather>
+                    </button>
+                    <div class="m-l-15">
+                        <h5 class="mat-subtitle-1 f-s-16 f-w-500 m-t-0 m-b-0">{{item.month.split('/')[0] | uppercase}}
+                        </h5>
+                        <h6 class="mat-subtitle-2 f-s-14 m-0">{{item.month.split('/')[1] | uppercase}}</h6>
+                    </div>
+                    <div class="m-l-auto">
+                        <h6 class="fw-normal m-0 mat-body-2 text-success">{{item.value}}</h6>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</ng-template>

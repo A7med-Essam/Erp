@@ -1,0 +1,17 @@
+:host{
+    ::ng-deep{
+        .meal-nutrition .mat-mdc-cell{
+            font-size: 12px;
+            padding: 3px !important;
+        }
+        
+        .meal-nutrition .mat-mdc-header-cell{
+            font-size: 12px;
+            padding: 3px !important;
+        }
+
+        .meal-nutrition .mdc-data-table__header-row{
+            height: 20px;
+        }
+    }
+}

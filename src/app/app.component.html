@@ -1,0 +1,29 @@
+<ngx-ui-loader></ngx-ui-loader>
+<router-outlet></router-outlet>
+
+<div *ngIf="displayLockWifi$ | async">
+    <div class="blank-layout-container justify-content-center LockWifi">
+        <div class="position-relative row w-100 h-100">
+            <div class="col-12">
+                <div class="p-32 d-flex align-items-start align-items-lg-center justify-content-center h-100">
+                    <div class="row justify-content-center w-100">
+                        <div class="col-lg-9 max-width-form bg-white p-5 rounded">
+                            <div class="row">
+                                <div class="col-3">
+                                    <i-feather name="wifi-off" class="feather-base me-16 text-muted"
+                                        style="width: 60px !important;height: 60px !important;border-radius: 50%;padding: 10px;background-color: #ddd;">
+                                    </i-feather>
+                                </div>
+                                <div class="col-9">
+                                    <h4 class="f-w-700 f-s-24 m-0">You are offline now...</h4>
+                                    <span class="d-block f-w-500 d-block m-t-10 text-muted">Please check your internet
+                                        connection.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

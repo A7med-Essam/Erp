@@ -1,0 +1,25 @@
+<mat-card class="w-100">
+    <mat-card-content>
+        <h4 class="mb-3">Table Filters</h4>
+        <div class="row">
+            <div class="col-12">
+                <mat-form-field class="mx-1" appearance="outline">
+                    <mat-label>Search By Meal Name</mat-label>
+                    <input matInput (keyup.enter)="filter(MealInput)" (blur)="filter(MealInput)"
+                        placeholder="Enter Meal Name..." #MealInput>
+                </mat-form-field>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
+<mat-card class="w-100 m-0">
+    <mat-card-content *ngIf="TABLE_DATA()?.data?.length">
+        <generic-table [TABLE_DATA]="TABLE_DATA()" [columns]="columns" [pageSizeOptions]="[10, 25, 50, 100, 500]"
+            [actions]="[]" (clicked)="clickedRow($event)" (PaginateOptions)="Paginate($event)"
+            [components]="{filter: false,columns: false,export: false,selection: false}">
+        </generic-table>
+        <mat-dialog-actions align="end">
+            <button color="warn" type="button" mat-button mat-dialog-close>Cancel</button>
+        </mat-dialog-actions>
+    </mat-card-content>
+</mat-card>

@@ -1,0 +1,25 @@
+<mat-card class="w-100">
+    <mat-card-content>
+        <h6 mat-dialog-title class="px-0">
+            UPDATE ITEM
+        </h6>
+        <div *ngIf="row">
+            <mat-form-field class="w-100 fs-16" appearance="outline">
+                <mat-label>Item Name</mat-label>
+                <input matInput type="text" [(ngModel)]="row.itemName">
+            </mat-form-field>
+            <mat-form-field class="w-100 fs-16" appearance="outline">
+                <mat-label>Qty</mat-label>
+                <input matInput type="text" [(ngModel)]="row.qty">
+            </mat-form-field>
+            <mat-form-field class="w-100 fs-16" appearance="outline">
+                <mat-label>Unit</mat-label>
+                <input matInput type="text" [disabled]="true" [(ngModel)]="row.unitName">
+            </mat-form-field>
+        </div>
+
+        <mat-dialog-actions align="end">
+            <button color="success" type="button" mat-raised-button (click)="_dialogRef.close()">Confirm</button>
+        </mat-dialog-actions>
+    </mat-card-content>
+</mat-card>

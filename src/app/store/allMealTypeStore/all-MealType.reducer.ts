@@ -1,0 +1,42 @@
+import { createReducer, on } from "@ngrx/store";
+import { IHttpResponse, IRequestStatus } from "../appStore";
+import * as fromActions from "./all-MealType.action";
+import { IFullMealType } from "src/app/interfaces/allPlan.interface";
+
+export interface IState extends IHttpResponse, IRequestStatus {
+  data: IFullMealType[] | null;
+}
+
+const initalValue: IState = {
+  error: null,
+  loading: true,
+  data: null,
+  messages: [],
+  succeeded: false,
+};
+
+export const Reducer = createReducer(
+  initalValue,
+  on(fromActions.GET_ALL_MEAL_TYPES_START, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+    succeeded: false,
+  })),
+  on(fromActions.GET_ALL_MEAL_TYPES_SUCCESS, (state, action) => ({
+    ...state,
+    error: null,
+    loading: false,
+    data: action.data.data,
+    succeeded: action.data.succeeded,
+    messages: action.data.messages,
+  })),
+  on(fromActions.GET_ALL_MEAL_TYPES_FAILED, (state, action) => ({
+    ...state,
+    error: action.error,
+    loading: false,
+    data: null,
+    messages: [action.error.message],
+    succeeded: false,
+  }))
+);

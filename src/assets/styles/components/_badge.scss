@@ -1,0 +1,41 @@
+.badge {
+    padding: 3px 12px;
+    font-size: 12px;
+    color: $white;
+}
+
+.badge-info {
+    background-color: $info;
+}
+
+.badge-primary {
+    background-color: $primary;
+}
+
+.badge-danger {
+    background-color: $danger;
+}
+
+.badge-success {
+    background-color: $success;
+}
+
+.badge-warning {
+    background-color: $warning;
+}
+
+.badge-secondary {
+    background-color: $secondary;
+}
+
+.badge-indigo {
+    background-color: $indigo;
+}
+
+.badge-accent {
+    background-color: $dark-info;
+}
+
+.badge-warn {
+    background-color: $dark-danger;
+}

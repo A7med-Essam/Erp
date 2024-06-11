@@ -1,0 +1,93 @@
+<div class="px-5">
+    <h6 mat-dialog-title class="px-0">
+        Dislike Form
+    </h6>
+    <form class="mt-3" [formGroup]="dialogForm" (ngSubmit)="onSubmit(dialogForm)">
+        <div class="row">
+            <div class="col-lg-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Select Category</mat-label>
+                    <mat-select formControlName="categoryID">
+                        <mat-option *ngFor="let item of dislikeCategories()?.data" [value]="item.dilikeCategoryID">
+                            {{item.dilikeCategoryName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Select Policy</mat-label>
+                    <mat-select formControlName="replacePolicy">
+                        <mat-option *ngFor="let item of Policy | keyvalue" [value]="item.key">
+                            {{item.value}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Select Item Name</mat-label>
+                    <input matInput placeholder="Select Item" formControlName="itemName" (click)="openItemDialog()"
+                        [readonly]="true" required>
+                    <mat-icon *ngIf="!dialogForm.value.itemID" (click)="openItemDialog()" class="text-secondary pointer"
+                        matSuffix>apps</mat-icon>
+                    <mat-icon *ngIf="dialogForm.value.itemID" class="text-success pointer" matSuffix>
+                        verified_user</mat-icon>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Select Opposite Item</mat-label>
+                    <input matInput placeholder="Select Item" formControlName="oppsiteItemName" (click)="openItemDialog2()"
+                        [readonly]="true" required>
+                    <mat-icon *ngIf="!dialogForm.value.oppsiteItemID" (click)="openItemDialog2()" class="text-secondary pointer"
+                        matSuffix>apps</mat-icon>
+                    <mat-icon *ngIf="dialogForm.value.oppsiteItemID" class="text-success pointer" matSuffix>
+                        verified_user</mat-icon>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-6">
+                <mat-form-field class="w-100 fs-16" appearance="outline">
+                    <mat-label>Item Unit</mat-label>
+                    <input matInput type="text" placeholder="Enter Item Unit" formControlName="itemUnitName">
+                </mat-form-field>
+            </div>
+            <div class="col-lg-6">
+                <mat-form-field class="w-100 fs-16" appearance="outline">
+                    <mat-label>Opposite Item Unit</mat-label>
+                    <input matInput type="text" placeholder="Enter Opposite Item Unit"
+                        formControlName="oppsiteItemUNitName">
+                </mat-form-field>
+            </div>
+            <div class="col-lg-6">
+                <mat-form-field class="w-100 fs-16" appearance="outline">
+                    <mat-label>Qty</mat-label>
+                    <input matInput type="text" placeholder="Enter Qty" formControlName="qty">
+                </mat-form-field>
+            </div>
+            <div class="col-lg-6">
+                <mat-form-field class="w-100 fs-16" appearance="outline">
+                    <mat-label>Opposite Qty</mat-label>
+                    <input matInput type="text" placeholder="Enter Opposite Qty" formControlName="oppsiteQty">
+                </mat-form-field>
+            </div>
+            <div class="col-lg-6">
+                <mat-form-field class="w-100 fs-16" appearance="outline">
+                    <mat-label>ForEach Qty</mat-label>
+                    <input matInput type="text" placeholder="Enter ForEach Qty" formControlName="forEashQty">
+                </mat-form-field>
+            </div>
+            <div class="col-lg-6">
+                <mat-form-field class="w-100 fs-16" appearance="outline">
+                    <mat-label>Opposite ForEach Qty</mat-label>
+                    <input matInput type="text" placeholder="Enter Opposite ForEach Qty"
+                        formControlName="oppsiteForEashQty">
+                </mat-form-field>
+            </div>
+        </div>
+        <mat-dialog-actions align="end">
+            <button type="button" mat-button mat-dialog-close>Cancel</button>
+            <button type="submit" mat-raised-button [disabled]="dialogForm.invalid" color="success">Submit</button>
+        </mat-dialog-actions>
+    </form>
+</div>

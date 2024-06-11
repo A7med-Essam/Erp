@@ -1,0 +1,15 @@
+<div class="my-4">
+    <mat-card class="w-100">
+        <mat-card-content>
+            <div class="flex-between mb-56">
+                <h4>Roles Table</h4>
+                <button mat-raised-button class="me-8 mb-8" [disabled]="!Permissions.Roles.Create" (click)="openCreateDialog()" color="success">Add New
+                    Role</button>
+            </div>
+            <generic-table [TABLE_DATA]="TABLE_DATA()" [columns]="columns" [actions]="actions"
+                [components]="{filter: true,columns: true,export: true, index:true}" (update)="updateRow($event)" 
+                (delete)="deleteRow($event)" (details)="managePermission($event)">
+            </generic-table>
+        </mat-card-content>
+    </mat-card>
+</div>

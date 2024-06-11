@@ -1,0 +1,162 @@
+<div class="table-responsive table-container" style="position: relative;">
+    <div class="table-spinner" *ngIf="showSpinner">
+        <mat-progress-spinner color="accent" mode="indeterminate" diameter="50">
+        </mat-progress-spinner>
+    </div>
+
+    <div class="example-header row m-0">
+        <div class="col-lg-6" *ngIf="components?.filter">
+            <mat-form-field class="mx-1">
+                <input matInput (keyup)="applyFilter(Filter.value)" placeholder="Filter" #Filter>
+            </mat-form-field>
+        </div>
+        <div class="col-lg-6" *ngIf="components?.columns">
+            <mat-form-field class="mx-1">
+                <mat-label>Toggle Columns</mat-label>
+                <mat-select multiple [(ngModel)]="selectedColumns" (ngModelChange)="toggleColumns()">
+                    <mat-select-trigger>
+                        {{selectedColumns[0] || ''}}
+                        <span class="example-additional-selection" *ngIf="(selectedColumns.length || 0) > 1">
+                            (+{{(selectedColumns.length || 0) - 1}} {{selectedColumns.length === 2 ? 'other' :
+                            'others'}})
+                        </span>
+                    </mat-select-trigger>
+                    <mat-option *ngFor="let col of currentColumns;" [value]="col">{{col}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <table mat-table #table matTableExporter [dataSource]="dataSource" matSort [hidden]="showSpinner"
+        #exporter="matTableExporter" cdkDropList [cdkDropListData]="dataSource"
+        (cdkDropListDropped)="dropTable($event)">
+
+        <ng-container matColumnDef="reorder" *ngIf="components?.reorder">
+            <th mat-header-cell *matHeaderCellDef> No. </th>
+            <td mat-cell *matCellDef="let element" class="pointer">
+                <mat-icon style="pointer-events: all;" cdkDragHandle>reorder</mat-icon>
+            </td>
+            <td mat-footer-cell *matFooterCellDef>Total</td>
+
+        </ng-container>
+
+        <ng-container matColumnDef="select" *ngIf="components?.selection">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="$event ? toggleAllRows() : null; selectedRows()"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()">
+                </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation();"
+                    (change)="$event ? selection.toggle(row) : null; selectedRows()"
+                    [checked]="selection.isSelected(row)">
+                </mat-checkbox>
+            </td>
+            <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <ng-container *ngFor="let column of columns;" [matColumnDef]="column?.columnDef">
+            <th mat-header-cell *matHeaderCellDef>
+                {{column.header}}
+            </th>
+            <td mat-cell *matCellDef="let row" (dblclick)="copy(column.cell(row))">
+                <container-element [ngSwitch]="column.type">
+                    <span *ngSwitchCase="ColumnType.badge">
+                        <span
+                            class="badge badge-{{getTagColor(column.cell(row))}} py-2 rounded-pill">{{column.cell(row)}}</span>
+                    </span>
+                    <span *ngSwitchCase="ColumnType.format">
+                        {{column.cell(row).split("|").join(" | ")}}
+                    </span>
+                    <span *ngSwitchCase="ColumnType.date">
+                        {{fixDate(column.cell(row)) | date:'dd/MM/yyyy' }}
+                    </span>
+                    <span *ngSwitchCase="ColumnType.img">
+                        <img style="width: 80px; border-radius: 10px;"
+                        [src]="column.cell(row) != 'null'? baseUrl + column.cell(row) : '../../../assets/images/no-images.png'" alt="table image">
+                    </span>
+                    <span *ngSwitchCase="ColumnType.arr">
+                        <span *ngFor="let item of column.cell(row)">
+                            <span *ngIf="item.type == 'date'">{{item.value | date:'dd/MM/yyyy'}}</span>
+                            <span *ngIf="item.type == 'text'">{{item.value}}</span>
+                            <br>
+                        </span>
+                    </span>
+                    <span *ngSwitchCase="ColumnType.toggle">
+                        <mat-slide-toggle [checked]="column.cell(row)" #slide (click)="slideToggle(row,slide)"></mat-slide-toggle>
+                    </span>
+                    <span *ngSwitchCase="ColumnType.dialog">
+                        <button mat-mini-fab color="accent" (click)="openDialogInfo(row)">
+                            <mat-icon>info_outline</mat-icon>
+                        </button>
+                    </span>
+                    <span *ngSwitchDefault>
+                        {{column.cell(row)}}
+                    </span>
+                </container-element>
+            </td>
+            <td mat-footer-cell *matFooterCellDef>
+                {{ calculateFooter(column) }}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Actions">
+            <th mat-header-cell *matHeaderCellDef>
+                Actions
+            </th>
+            <td mat-cell *matCellDef="let row;" (click)="$event.stopPropagation()">
+                <button type="button" mat-icon-button [matMenuTriggerFor]="actionMenu">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #actionMenu="matMenu">
+
+
+                    <ng-container *ngFor="let item of actions">
+                            <button type="button" [disabled]="!item.permission" mat-menu-item (click)="actionMethod(item.action,row)">
+                                <mat-icon>{{ item.icon }}</mat-icon>
+                                <span>{{ item.label }}</span>
+                            </button>
+                    </ng-container>
+
+                </mat-menu>
+            </td>
+            <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+        <ng-container matColumnDef="index">
+            <th mat-header-cell *matHeaderCellDef>
+                #
+            </th>
+            <td mat-cell *matCellDef="let row; let i = index" (click)="$event.stopPropagation()">
+                {{i+1}}
+            </td>
+            <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <div *ngIf="components?.reorder; else temp">
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="clickedRow(row)" cdkDrag
+                [cdkDragData]="row"></tr>
+        </div>
+        <ng-template #temp>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="clickedRow(row)"></tr>
+        </ng-template>
+        <div *ngIf="components?.footer">
+            <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+        </div>
+
+    </table>
+    <div class="flex-between flex-wrap my-3">
+        <div>
+            <button mat-raised-button class="me-8 mb-8" (click)="exporter.exportTable('csv')" color="help"
+                *ngIf="components?.export">
+                <mat-icon>file_open</mat-icon>
+                EXPORT
+            </button>
+        </div>
+        <mat-paginator *ngIf="TABLE_DATA?.currentPage" [pageSizeOptions]="pageSizeOptions"
+            (page)="handlePaginate($event)" [length]="length" [pageSize]="pageSize" [showFirstLastButtons]="true"
+            [pageIndex]="pageIndex -1" aria-label="Select page">
+        </mat-paginator>
+    </div>
+</div>
